@@ -24,4 +24,6 @@ app_name = 'BCRUPro'
 urlpatterns = [
     path('admin/', admin.site.urls),
     re_path(r'^$', index, name='index'),
+    re_path(r'^index2', index2, name='index2'),
+    re_path(r'^index3', index3, name='index3'),
 ]
