@@ -15,8 +15,8 @@ class Node(models.Model):
     device_id = models.TextField(unique=True)
     owner = models.ForeignKey(Owner, primary_key=False, blank=False, on_delete=PROTECT)
     location = models.TextField()
-    today_revenue = models.BigIntegerField()
-    summary_revenue = models.BigIntegerField()
+    today_revenue = models.BigIntegerField(default=0)
+    summary_revenue = models.BigIntegerField(default=0)
 
     def __str__(self):
         return self.device_id

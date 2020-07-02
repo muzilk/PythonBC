@@ -20,9 +20,8 @@ from django.contrib import admin
 from django.urls import path, re_path, include
 from BCRUPro.views import *
 
-
+app_name = 'BCRUPro'
 urlpatterns = [
     path('admin/', admin.site.urls),
     re_path(r'^$', index, name='index'),
-    path('app/', include("app.urls")),
 ]
