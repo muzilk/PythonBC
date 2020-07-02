@@ -11,10 +11,18 @@ from BCRUPro.models import Owner, Node
 
 
 @require_GET
-def index(requset):
-    return render(requset, 'index.html')
+def index(request):
+    nodes = Node.objects.all()
+    context = {
+        "node1": nodes[0],
+        "node2": nodes[1],
+        "node3": nodes[2],
+        "node4": nodes[3]
+    }
+    return render(request, 'index.html', context=context)
 
 
+@require_http_methods(['POST', 'GET'])
 def create_new_node(request):
     if request.method == 'GET':
         return render(request, 'index.html')
