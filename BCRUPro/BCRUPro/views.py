@@ -10,8 +10,7 @@ from django.views.decorators.http import require_GET, require_POST, require_http
 from BCRUPro.models import Owner, Node
 
 
-@require_GET
-def index(request):
+def get_nodes_4():
     nodes = Node.objects.all()
     context = {
         "node1": nodes[0],
@@ -19,29 +18,23 @@ def index(request):
         "node3": nodes[2],
         "node4": nodes[3]
     }
-    return render(request, 'index.html', context=context)
+    return context
+
+
+@require_GET
+def index(request):
+    return render(request, 'index.html', context=get_nodes_4())
+
 
 @require_GET
 def index2(request):
-    nodes = Node.objects.all()
-    context = {
-        "node1": nodes[0],
-        "node2": nodes[1],
-        "node3": nodes[2],
-        "node4": nodes[3]
-    }
-    return render(request, 'index2.html', context=context)
+    return render(request, 'index2.html', context=get_nodes_4())
+
 
 @require_GET
 def index3(request):
-    nodes = Node.objects.all()
-    context = {
-        "node1": nodes[0],
-        "node2": nodes[1],
-        "node3": nodes[2],
-        "node4": nodes[3]
-    }
-    return render(request, 'index3.html', context=context)
+    return render(request, 'index3.html', context=get_nodes_4())
+
 
 @require_http_methods(['POST', 'GET'])
 def create_new_node(request):
