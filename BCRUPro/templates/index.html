@@ -81,6 +81,22 @@
             </div>
           </div>
           <!-- ./col -->
+            <div class="col-lg-3 col-6">
+            <!-- small box -->
+            <div class="small-box bg-danger">
+              <div class="inner">
+                <h3>{{ node4.device_id}}</h3>
+                <p>Today Revenue:{{ node4.today_revenue}}</p>
+                <p>Summary: {{ node4.summary_revenue}}</p>
+                <p>Location: {{ node4.location}}</p>
+              </div>
+              <div class="icon">
+                <i class="ion ion-pie-graph"></i>
+              </div>
+              <a href="{% url 'node_detail' %}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+            </div>
+          </div>
+          <!-- ./col -->
         </div>
         <!-- /.row -->
         <!-- Main row -->
