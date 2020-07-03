@@ -47,6 +47,29 @@ def node_detail(request):
     }
     return render(request, 'pages/examples/node-detail.html', context=context)
 
+@require_GET
+def node_edit(request):
+    nodes = Node.objects.all()
+    context = {
+        "node1": nodes[0],
+        "node2": nodes[1],
+        "node3": nodes[2],
+        "node4": nodes[3]
+    }
+    return render(request, 'pages/examples/node-edit.html', context=context)
+
+@require_GET
+def node_add(request):
+    nodes = Node.objects.all()
+    context = {
+        "node1": nodes[0],
+        "node2": nodes[1],
+        "node3": nodes[2],
+        "node4": nodes[3]
+    }
+    return render(request, 'pages/examples/node-add.html', context=context)
+
+
 @require_http_methods(['POST', 'GET'])
 def create_new_node(request):
     if request.method == 'GET':
