@@ -45,7 +45,6 @@ def get_nodes_block_data():
 @require_GET
 def index(request):
     context = get_nodes_4()
-    context.update(get_blocks())
     context.update(get_nodes_block_data())
     return render(request, 'index.html', context=context)
 
@@ -60,8 +59,19 @@ def index3(request):
     return render(request, 'index3.html', context=get_nodes_4())
 
 
+@require_GET
 def node_detail(request):
     return render(request, 'pages/examples/node-detail.html')
+
+
+@require_GET
+def node_edit(request):
+    return render(request, 'pages/examples/node-edit.html', context=get_nodes_4())
+
+
+@require_GET
+def node_add(request):
+    return render(request, 'pages/examples/node-add.html')
 
 
 @require_http_methods(['POST', 'GET'])
