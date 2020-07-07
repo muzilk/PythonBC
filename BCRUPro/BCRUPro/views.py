@@ -30,22 +30,24 @@ def get_blocks():
     return context
 
 
-def get_nodes_block_data():
-    data_list = {}
+def get_revenue_data():
+    block_data = {}
+    summary_data = {}
     for node in Node.objects.all():
         blocks = Block.objects.filter(node_id=node.id)
         revenue = []
         if blocks:
             for block in blocks:
                 revenue.append(block.revenue)
-            data_list.update({node.device_id: revenue})
-    return {"block_data": data_list}
+            block_data.update({node.device_id: revenue})
+            summary_data.update({node.device_id: sum(revenue)})
+    return {"block_data": block_data, "summary_data": summary_data}
 
 
 @require_GET
 def index(request):
     context = get_nodes_4()
-    context.update(get_nodes_block_data())
+    context.update(get_revenue_data())
     return render(request, 'index.html', context=context)
 
 

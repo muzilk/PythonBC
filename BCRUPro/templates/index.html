@@ -98,7 +98,18 @@
           </div>
           <!-- ./col -->
         </div>
-          <div id="container" style="width: 550px; height: 400px; margin: 0 auto"></div>
+
+        <div class="card">
+            <div class="card-header">
+                <div id="revenue_plot" style="width: 550px; height: 400px; margin: 0 auto"></div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <div id="node_pie" style="width: 550px; height: 400px; margin: 0 auto"></div>
+            </div>
+        </div>
         <!-- /.row -->
         <!-- Main row -->
         <div class="row">
@@ -690,8 +701,64 @@ $(document).ready(function() {
    json.plotOptions = plotOptions;
    json.credits = credits;
    json.series = series;
-   $('#container').highcharts(json);
+   $('#revenue_plot').highcharts(json);
 
+});
+</script>
+
+<script language="JavaScript">
+$(document).ready(function() {
+   var chart = {
+       plotBackgroundColor: null,
+       plotBorderWidth: null,
+       plotShadow: false
+   };
+   var title = {
+      text: 'Revenue Pie'
+   };
+   var tooltip = {
+      pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+   };
+   var plotOptions = {
+      pie: {
+         allowPointSelect: true,
+         cursor: 'pointer',
+         dataLabels: {
+            enabled: true,
+            format: '<b>{point.name}%</b>: {point.percentage:.1f} %',
+            style: {
+               color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+            }
+         }
+      }
+   };
+   var series= [{
+      type: 'pie',
+      name: 'Node pie',
+      data: [
+          {% for node, data in summary_data.items %}
+              ["{{ node }}", {{ data }}],
+          {% endfor %}
+      ]
+   }];
+   // Radialize the colors
+   Highcharts.getOptions().colors = Highcharts.map(Highcharts.getOptions().colors, function (color) {
+      return {
+         radialGradient: { cx: 0.5, cy: 0.3, r: 0.7 },
+         stops: [
+            [0, color],
+            [1, Highcharts.Color(color).brighten(-0.3).get('rgb')] // darken
+         ]
+      };
+   });
+
+   var json = {};
+   json.chart = chart;
+   json.title = title;
+   json.tooltip = tooltip;
+   json.series = series;
+   json.plotOptions = plotOptions;
+   $('#node_pie').highcharts(json);
 });
 </script>
 {% endblock %}
