@@ -135,7 +135,7 @@ STATICFILES_DIRS = [
     # os.path.join(STATIC_ROOT, 'AdminLTE_3_0_5'),
     ("adminlte", os.path.join(STATIC_ROOT, 'AdminLTE_3_0_5')),
     ("img", os.path.join(STATIC_ROOT, 'datatables', 'images')),
-    ("js", os.path.join(STATIC_ROOT, 'datatables', 'js')),
+    ("js", os.path.join(STATIC_ROOT, 'js')),
     ("fonts", os.path.join(STATIC_ROOT, 'datatables', 'fonts')),
 ]
 
