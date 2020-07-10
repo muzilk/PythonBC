@@ -31,4 +31,8 @@ urlpatterns = [
     re_path(r'^nodeDetail', node_detail, name='node_detail'),
     re_path(r'^nodeAdd', node_add, name='node_add'),
     re_path(r'^nodeEdit', node_edit, name='node_edit'),
+    re_path(r'^login', login, name='login'),
+    re_path(r'^register', register, name='register'),
+    re_path(r'^forgot_password', forgot_password, name='forgot_password'),
+    path('user/', user_manage, name='user_manage')
 ]
