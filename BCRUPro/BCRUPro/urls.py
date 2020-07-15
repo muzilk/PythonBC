@@ -34,5 +34,6 @@ urlpatterns = [
     re_path(r'^login', login, name='login'),
     re_path(r'^register', register, name='register'),
     re_path(r'^forgot_password', forgot_password, name='forgot_password'),
-    path('user/', user_manage, name='user_manage')
+    re_path(r'^user_manage', user_manage, name='user_manage'),
+    re_path(r'^user_blocks', user_blocks, name='user_blocks')
 ]

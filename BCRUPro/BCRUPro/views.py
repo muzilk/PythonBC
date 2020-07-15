@@ -67,6 +67,13 @@ def user_manage(requset):
     return render(requset, 'pages/tables/user.html', locals())
 
 @require_GET
+def user_blocks(requset):
+    users = Owner.objects.all()
+    print(users)
+    return render(requset, 'pages/tables/blocks.html', locals())
+
+
+@require_GET
 def login(request):
     return render(request, 'pages/examples/login.html')
 
