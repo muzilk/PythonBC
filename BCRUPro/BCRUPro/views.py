@@ -60,30 +60,37 @@ def index2(request):
 def index3(request):
     return render(request, 'index3.html', context=get_nodes_4())
 
+
 @require_GET
 def user_manage(requset):
     users = Owner.objects.all()
     print(users)
     return render(requset, 'pages/tables/user.html', locals())
 
+
 @require_GET
-def user_blocks(requset):
-    users = Owner.objects.all()
-    print(users)
-    return render(requset, 'pages/tables/blocks.html', locals())
+def block_display(requset):
+    blocks = Block.objects.all()
+    context = {}
+    context['blocks'] = blocks
+    context['theader'] = Block.get_threader()
+    return render(requset, 'pages/tables/blocks.html', context=context)
 
 
 @require_GET
 def login(request):
     return render(request, 'pages/examples/login.html')
 
+
 @require_GET
 def register(request):
     return render(request, 'pages/examples/register.html')
 
+
 @require_GET
 def forgot_password(request):
     return render(request, 'pages/examples/forgot-password.html')
+
 
 @require_GET
 def node_detail(request):

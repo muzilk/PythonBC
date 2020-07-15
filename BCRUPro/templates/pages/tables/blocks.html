@@ -25,39 +25,30 @@
                 <table id="example" class="table table-bordered table-striped">
                   <thead>
                   <tr>
-                    <th>ID</th>
-                    <th>NAME</th>
-                    <th>PASSWORD</th>
-                    <th>RULE</th>
-                    <th>STATUS</th>
-                    <th>OPTIONS</th>
+                      {% for th in theader %}
+                        <th>
+                            <strong>{{ th }}</strong>
+                        </th>
+                      {% endfor %}
                   </tr>
                   </thead>
                   <tbody>
-                  {% for user in users %}
+                  {% for block in blocks %}
                     <tr>
-                        <td>{{ user.id }}</td>
-                        <td>{{ user.name }}</td>
-                        <td>{{ user.password }}</td>
-                        <td>{{ user.rule }}</td>
-                        <td>{{ user.status }}</td>
-                        <td>
-{#                            <div class="text-center mt-52 mb-3">#}
-                                <input type="button" value="Edit" class="btn btn-sm btn-info">
-                                <input type="button" value="Delete" class="btn btn-sm btn-danger">
-{#                            </div>#}
-                        </td>
+                        <td>{{ block.block_id }}</td>
+                        <td>{{ block.node }}</td>
+                        <td>{{ block.revenue }}</td>
+                        <td>{{ block.create_at }}</td>
                     </tr>
                   {% endfor %}
                   </tbody>
                   <tfoot>
                   <tr>
-                    <th>ID</th>
-                    <th>NAME</th>
-                    <th>PASSWORD</th>
-                    <th>RULE</th>
-                    <th>STATUS</th>
-                    <th>OPTIONS</th>
+                      {% for th in theader %}
+                        <th>
+                            <strong>{{ th }}</strong>
+                        </th>
+                      {% endfor %}
                   </tr>
                   </tfoot>
                 </table>
