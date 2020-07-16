@@ -1,3 +1,4 @@
+from django.contrib.auth import authenticate
 from django.shortcuts import render
 
 # Create your views here.
@@ -72,21 +73,6 @@ def block_display(requset):
     blocks = Block.objects.all()
     theader = Block.get_threader()
     return render(requset, 'pages/tables/blocks.html', locals())
-
-
-@require_GET
-def login(request):
-    return render(request, 'pages/examples/login.html')
-
-
-@require_GET
-def register(request):
-    return render(request, 'pages/examples/register.html')
-
-
-@require_GET
-def forgot_password(request):
-    return render(request, 'pages/examples/forgot-password.html')
 
 
 @require_GET
