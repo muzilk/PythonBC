@@ -64,17 +64,14 @@ def index3(request):
 @require_GET
 def user_manage(requset):
     users = Owner.objects.all()
-    print(users)
     return render(requset, 'pages/tables/user.html', locals())
 
 
 @require_GET
 def block_display(requset):
     blocks = Block.objects.all()
-    context = {}
-    context['blocks'] = blocks
-    context['theader'] = Block.get_threader()
-    return render(requset, 'pages/tables/blocks.html', context=context)
+    theader = Block.get_threader()
+    return render(requset, 'pages/tables/blocks.html', locals())
 
 
 @require_GET
