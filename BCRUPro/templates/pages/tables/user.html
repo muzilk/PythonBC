@@ -24,23 +24,17 @@
               <div class="card-body">
                 <table id="example" class="table table-bordered table-striped">
                   <thead>
-                  <tr>
-                    <th>ID</th>
-                    <th>NAME</th>
-                    <th>PASSWORD</th>
-                    <th>RULE</th>
-                    <th>STATUS</th>
-                    <th>OPTIONS</th>
-                  </tr>
+                    <tr>
+                      {% for th in theader %}
+                        <th>{{ th }}</th>
+                      {% endfor %}
+                    </tr>
                   </thead>
                   <tbody>
                   {% for user in users %}
                     <tr>
-                        <td>{{ user.id }}</td>
                         <td>{{ user.name }}</td>
-                        <td>{{ user.password }}</td>
-                        <td>{{ user.rule }}</td>
-                        <td>{{ user.status }}</td>
+                        <td>{{ user.email }}</td>
                         <td>
 {#                            <div class="text-center mt-52 mb-3">#}
                                 <input type="button" value="Edit" class="btn btn-sm btn-info">
@@ -50,16 +44,6 @@
                     </tr>
                   {% endfor %}
                   </tbody>
-                  <tfoot>
-                  <tr>
-                    <th>ID</th>
-                    <th>NAME</th>
-                    <th>PASSWORD</th>
-                    <th>RULE</th>
-                    <th>STATUS</th>
-                    <th>OPTIONS</th>
-                  </tr>
-                  </tfoot>
                 </table>
               </div>
               <!-- /.card-body -->

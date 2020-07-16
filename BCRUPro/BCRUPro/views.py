@@ -8,7 +8,8 @@ from django.contrib import messages
 from django.http import Http404, HttpResponse
 from django.views.decorators.http import require_GET, require_POST, require_http_methods
 
-from BCRUPro.models import Owner, Node, Block
+from BCRUPro.models import Node, Block
+from login.models import User
 
 
 def get_nodes_4():
@@ -64,7 +65,8 @@ def index3(request):
 
 @require_GET
 def user_manage(requset):
-    users = Owner.objects.all()
+    users = User.objects.all()
+    theader = User.get_threader()
     return render(requset, 'pages/tables/user.html', locals())
 
 
@@ -97,7 +99,7 @@ def create_new_node(request):
     else:
         # TODO: step
         owner_name = request.POST.get('owner', None)
-        owner = Owner.objects.create(name=owner_name)
+        owner = User.objects.create(name=owner_name)
         device_id = request.POST.get('device_id', None)
         location = request.POST.get('location', None)
         Node.objects.create(device_id=device_id, owner=owner, location=location).save()

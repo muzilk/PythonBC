@@ -15,6 +15,10 @@ class User(models.Model):
     sex = models.CharField(max_length=32, choices=gender, default='male')
     c_time = models.DateTimeField(auto_now_add=True)
 
+    @staticmethod
+    def get_threader():
+        return ["Name", "Email"]
+
     def __str__(self):
         return self.name
 

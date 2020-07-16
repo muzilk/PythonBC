@@ -3,17 +3,12 @@ from django.db import models
 # Create your models here.
 from django.db.models import PROTECT
 
-
-class Owner(models.Model):
-    name = models.TextField()
-
-    def __str__(self):
-        return self.name
+from login.models import User
 
 
 class Node(models.Model):
     device_id = models.TextField(unique=True)
-    owner = models.ForeignKey(Owner, primary_key=False, blank=False, on_delete=PROTECT)
+    owner = models.ForeignKey(User, primary_key=False, blank=False, on_delete=PROTECT)
     location = models.TextField()
     today_revenue = models.BigIntegerField(default=0)
     summary_revenue = models.BigIntegerField(default=0)
