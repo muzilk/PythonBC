@@ -126,6 +126,8 @@ USE_L10N = True
 # Using local time when saving data to DB, or will have 8 hours equation of time
 USE_TZ = False
 
+SESSION_COOKIE_AGE = 60*30
+
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
