@@ -30,7 +30,11 @@ def login(request):
     else:
         email = request.POST.get('email')
         password = request.POST.get('password')
-        user = User.objects.get(email=email)
+        try:
+            user = User.objects.get(email=email)
+        except Exception as e:
+            print(e)
+            user = None
         if user is not None:
             if user.password == hash_code(password):
                 request.session['is_login'] = True
