@@ -21,8 +21,7 @@ def hash_code(s, salt='mysite'):
 @require_http_methods(['POST', 'GET'])
 def login(request):
     if request.session.get('is_login', None):
-        owner_name = request.session['user_name']
-        context = get_nodes(owner_name)
+        context = get_nodes(request)
         context.update(get_revenue_data())
         return render(request, 'index.html', context=context)
 
@@ -41,7 +40,7 @@ def login(request):
                 request.session['is_login'] = True
                 request.session['user_id'] = user.id
                 request.session['user_name'] = user.name
-                context = get_nodes()
+                context = get_nodes(request)
                 context.update(get_revenue_data())
                 return render(request, 'index.html', context=context)
             else:

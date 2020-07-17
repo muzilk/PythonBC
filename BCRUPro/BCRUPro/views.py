@@ -12,14 +12,18 @@ from BCRUPro.models import Node, Block
 from login.models import User
 
 
-def get_nodes(owner):
-    nodes = Node.objects.filter(owner__name=owner)
-    context = {
-        "node1": nodes[0],
-        "node2": nodes[1],
-        "nodes": nodes
-    }
-    return context
+def get_nodes(request):
+    if request.session.get('is_login', None):
+        owner_name = request.session['user_name']
+        nodes = Node.objects.filter(owner__name=owner_name)
+        context = {
+            "node1": nodes[0],
+            "node2": nodes[1],
+            "nodes": nodes
+        }
+        return context
+    else:
+        return None
 
 
 def get_blocks():
@@ -30,38 +34,39 @@ def get_blocks():
     return context
 
 
-def get_revenue_data():
-    block_data = {}
-    summary_data = {}
-    for node in Node.objects.all():
-        blocks = Block.objects.filter(node_id=node.id)
-        revenue = []
-        if blocks:
-            for block in blocks:
-                revenue.append(block.revenue)
-            block_data.update({node.device_id: revenue})
-            summary_data.update({node.device_id: sum(revenue)})
-    return {"block_data": block_data, "summary_data": summary_data}
+def get_revenue_data(request):
+    if request.session.get('is_login', None):
+        owner_name = request.session['user_name']
+        block_data = {}
+        summary_data = {}
+        for node in Node.objects.filter(owner__name=owner_name):
+            blocks = Block.objects.filter(node_id=node.id)
+            revenue = []
+            if blocks:
+                for block in blocks:
+                    revenue.append(block.revenue)
+                block_data.update({node.device_id: revenue})
+                summary_data.update({node.device_id: sum(revenue)})
+        return {"block_data": block_data, "summary_data": summary_data}
+    else:
+        return None
 
 
 @require_GET
 def index(request):
-    user_name = request.session['user_name']
-    context = get_nodes(user_name)
-    context.update(get_revenue_data())
+    context = get_nodes(request)
+    context.update(get_revenue_data(request))
     return render(request, 'index.html', context=context)
 
 
 @require_GET
 def index2(request):
-    user_name = request.session['user_name']
-    return render(request, 'index2.html', context=get_nodes(user_name))
+    return render(request, 'index2.html', context=get_nodes(request))
 
 
 @require_GET
 def index3(request):
-    user_name = request.session['user_name']
-    return render(request, 'index3.html', context=get_nodes(user_name))
+    return render(request, 'index3.html', context=get_nodes(request))
 
 
 @require_GET
@@ -102,7 +107,7 @@ def node_detail(request):
 
 @require_GET
 def node_edit(request):
-    return render(request, 'pages/examples/node-edit.html', context=get_nodes(request.session['user_id']))
+    return render(request, 'pages/examples/node-edit.html', context=get_nodes(request))
 
 
 
