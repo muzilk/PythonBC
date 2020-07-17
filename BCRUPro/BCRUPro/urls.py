@@ -35,7 +35,7 @@ urlpatterns = [
     re_path(r'^index2', index2, name='index2'),
     re_path(r'^index3', index3, name='index3'),
     re_path(r'^nodeDetail', node_detail, name='node_detail'),
-    re_path(r'^nodeAdd', node_add, name='node_add'),
+    re_path(r'^create_new_node', create_new_node, name='create_new_node'),
     re_path(r'^nodeEdit', node_edit, name='node_edit'),
 
     re_path(r'^user_manage', user_manage, name='user_manage'),
