@@ -3,6 +3,7 @@
 
     <!-- Main content -->
 {% block content %}
+    <form action="{% url 'create_new_node' %}" method="post">
       <div class="row">
         <div class="col-md-6">
           <div class="card card-primary">
@@ -31,10 +32,11 @@
       </div>
       <div class="row">
         <div class="col-12">
-          <a href="{% url 'create_new_node' %}" class="btn btn-secondary">Cancel</a>
+          <a href="{% url 'index' %}" class="btn btn-secondary">Cancel</a>
           <input type="submit" value="Create new node" class="btn btn-success float-right">
         </div>
       </div>
+    </form>
 {% endblock %}
 
 

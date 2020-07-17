@@ -65,12 +65,12 @@ def index(request):
 
 @require_GET
 def index2(request):
-    return render(request, 'index2.html', context=get_nodes(request))
+    return render(request, 'index2.html')
 
 
 @require_GET
 def index3(request):
-    return render(request, 'index3.html', context=get_nodes(request))
+    return render(request, 'index3.html')
 
 
 @require_GET
