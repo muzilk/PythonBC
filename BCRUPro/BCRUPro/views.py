@@ -37,9 +37,12 @@ def get_blocks():
 def get_revenue_data(request):
     if request.session.get('is_login', None):
         owner_name = request.session['user_name']
+        owner_id = request.session['user_id']
         block_data = {}
         summary_data = {}
-        for node in Node.objects.filter(owner__name=owner_name):
+        print("owner", owner_name)
+        print("owner", owner_id)
+        for node in Node.objects.filter(owner_id=owner_id):
             blocks = Block.objects.filter(node_id=node.id)
             revenue = []
             if blocks:
@@ -47,6 +50,7 @@ def get_revenue_data(request):
                     revenue.append(block.revenue)
                 block_data.update({node.device_id: revenue})
                 summary_data.update({node.device_id: sum(revenue)})
+        print({"block_data": block_data, "summary_data": summary_data})
         return {"block_data": block_data, "summary_data": summary_data}
     else:
         return None

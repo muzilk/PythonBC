@@ -22,7 +22,7 @@ def hash_code(s, salt='mysite'):
 def login(request):
     if request.session.get('is_login', None):
         context = get_nodes(request)
-        context.update(get_revenue_data())
+        context.update(get_revenue_data(request))
         return render(request, 'index.html', context=context)
 
     if request.method == 'GET':
@@ -41,7 +41,7 @@ def login(request):
                 request.session['user_id'] = user.id
                 request.session['user_name'] = user.name
                 context = get_nodes(request)
-                context.update(get_revenue_data())
+                context.update(get_revenue_data(request))
                 return render(request, 'index.html', context=context)
             else:
                 return render(request, 'pages/examples/login.html', {"message": "Password is error"})
