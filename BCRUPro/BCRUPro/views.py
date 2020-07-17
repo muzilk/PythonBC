@@ -1,4 +1,5 @@
 from django.contrib.auth import authenticate
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 
 # Create your views here.
@@ -13,17 +14,11 @@ from login.models import User
 
 
 def get_nodes(request):
-    if request.session.get('is_login', None):
-        owner_name = request.session['user_name']
-        nodes = Node.objects.filter(owner__name=owner_name)
-        context = {
-            "node1": nodes[0],
-            "node2": nodes[1],
-            "nodes": nodes
-        }
-        return context
-    else:
-        return None
+    context = {}
+    owner_name = request.session['user_name']
+    nodes = Node.objects.filter(owner__name=owner_name)
+    context.update({"nodes": nodes})
+    return context
 
 
 def get_blocks():
@@ -35,27 +30,22 @@ def get_blocks():
 
 
 def get_revenue_data(request):
-    if request.session.get('is_login', None):
-        owner_name = request.session['user_name']
-        owner_id = request.session['user_id']
-        block_data = {}
-        summary_data = {}
-        print("owner", owner_name)
-        print("owner", owner_id)
-        for node in Node.objects.filter(owner_id=owner_id):
-            blocks = Block.objects.filter(node_id=node.id)
-            revenue = []
-            if blocks:
-                for block in blocks:
-                    revenue.append(block.revenue)
-                block_data.update({node.device_id: revenue})
-                summary_data.update({node.device_id: sum(revenue)})
-        print({"block_data": block_data, "summary_data": summary_data})
-        return {"block_data": block_data, "summary_data": summary_data}
-    else:
-        return None
+    owner_id = request.session['user_id']
+    block_data = {}
+    summary_data = {}
+
+    for node in Node.objects.filter(owner_id=owner_id):
+        blocks = Block.objects.filter(node_id=node.id)
+        revenue = []
+        if blocks:
+            for block in blocks:
+                revenue.append(block.revenue)
+            block_data.update({node.device_id: revenue})
+            summary_data.update({node.device_id: sum(revenue)})
+    return {"block_data": block_data, "summary_data": summary_data}
 
 
+@login_required
 @require_GET
 def index(request):
     context = get_nodes(request)
@@ -63,16 +53,19 @@ def index(request):
     return render(request, 'index.html', context=context)
 
 
+@login_required
 @require_GET
 def index2(request):
     return render(request, 'index2.html')
 
 
+@login_required
 @require_GET
 def index3(request):
     return render(request, 'index3.html')
 
 
+@login_required
 @require_GET
 def user_manage(requset):
     users = User.objects.all()
@@ -80,6 +73,7 @@ def user_manage(requset):
     return render(requset, 'pages/tables/user.html', locals())
 
 
+@login_required
 @require_GET
 def block_display(requset):
     blocks = Block.objects.all()
@@ -87,6 +81,7 @@ def block_display(requset):
     return render(requset, 'pages/tables/blocks.html', locals())
 
 
+@login_required
 @require_http_methods(['POST', 'GET'])
 def create_new_node(request):
     if request.method == 'GET':
@@ -104,11 +99,13 @@ def create_new_node(request):
         return render(request, 'index.html')
 
 
+@login_required
 @require_GET
 def node_detail(request):
     return render(request, 'pages/examples/node-detail.html')
 
 
+@login_required
 @require_GET
 def node_edit(request):
     return render(request, 'pages/examples/node-edit.html', context=get_nodes(request))
