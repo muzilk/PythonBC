@@ -1,3 +1,5 @@
+import random
+
 from django.contrib.auth import authenticate
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
@@ -17,7 +19,15 @@ def get_nodes(request):
     context = {}
     owner_name = request.session['user_name']
     nodes = Node.objects.filter(owner__name=owner_name)
-    context.update({"nodes": nodes})
+    # nodes = Node.objects.all()
+    colors = ["bg-info", "bg-success", "bg-warning", "bg-danger", "bg-orange"]
+    nodesWithColors = []
+    for node in nodes:
+        nodesWithColors.append({'node': node, 'color': random.choice(colors)})
+    context = {
+        "nodes": nodes,
+        "nodesWithColors": nodesWithColors
+    }
     return context
 
 
@@ -56,13 +66,13 @@ def index(request):
 @login_required
 @require_GET
 def index2(request):
-    return render(request, 'index2.html')
+    return render(request, 'index2.html', context=get_nodes(request))
 
 
 @login_required
 @require_GET
 def index3(request):
-    return render(request, 'index3.html')
+    return render(request, 'index3.html', context=get_nodes(request))
 
 
 @login_required
