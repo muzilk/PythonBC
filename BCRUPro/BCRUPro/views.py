@@ -58,27 +58,25 @@ def get_revenue_data(request):
     return {"block_data": block_data, "summary_data": summary_data}
 
 
-@login_required
 @require_GET
 def index(request):
     context = get_nodes(request)
     context.update(get_revenue_data(request))
+    context.update({"owner_name": request.session['user_name']})
     return render(request, 'index.html', context=context)
 
 
-@login_required
 @require_GET
 def index2(request):
     return render(request, 'index2.html', context=get_nodes(request))
 
 
-@login_required
+
 @require_GET
 def index3(request):
     return render(request, 'index3.html', context=get_nodes(request))
 
 
-@login_required
 @require_GET
 def user_manage(requset):
     users = User.objects.all()
@@ -86,7 +84,6 @@ def user_manage(requset):
     return render(requset, 'pages/tables/user.html', locals())
 
 
-@login_required
 @require_GET
 def block_display(requset):
     blocks = Block.objects.all()
@@ -94,7 +91,6 @@ def block_display(requset):
     return render(requset, 'pages/tables/blocks.html', locals())
 
 
-@login_required
 @require_http_methods(['POST', 'GET'])
 def create_new_node(request):
     if request.method == 'GET':
@@ -112,13 +108,11 @@ def create_new_node(request):
         return render(request, 'index.html')
 
 
-@login_required
 @require_GET
 def node_detail(request):
     return render(request, 'pages/examples/node-detail.html')
 
 
-@login_required
 @require_GET
 def node_edit(request):
     return render(request, 'pages/examples/node-edit.html', context=get_nodes(request))

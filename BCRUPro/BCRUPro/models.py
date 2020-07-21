@@ -25,7 +25,7 @@ class Block(models.Model):
     block_id = models.TextField(unique=True)
     node = models.ForeignKey(Node, primary_key=False, blank=False, on_delete=PROTECT)
     revenue = models.BigIntegerField()
-    create_at = models.DateTimeField(auto_created=True)
+    create_at = models.DateTimeField(auto_now=True)
 
     @staticmethod
     def get_threader():

@@ -20,10 +20,10 @@ def hash_code(s, salt='mysite'):
 
 @require_http_methods(['POST', 'GET'])
 def login(request):
-    if request.session.get('is_login', None):
-        context = get_nodes(request)
-        context.update(get_revenue_data(request))
-        return render(request, 'index.html', context=context)
+    # if request.session.get('is_login', None):
+    #     context = get_nodes(request)
+    #     context.update(get_revenue_data(request))
+    #     return render(request, 'index.html', context=context)
 
     if request.method == 'GET':
         return render(request, 'pages/examples/login.html')
