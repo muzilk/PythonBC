@@ -22,8 +22,11 @@ def get_nodes(request):
     # nodes = Node.objects.all()
     colors = ["bg-info", "bg-success", "bg-warning", "bg-danger", "bg-orange"]
     nodesWithColors = []
-    for node in nodes:
-        nodesWithColors.append({'node': node, 'color': random.choice(colors)})
+    for i in range(len(nodes)):
+        node = nodes[i]
+        index = i % 4
+        color = colors[index]
+        nodesWithColors.append({'node': node, 'color': color})
     context = {
         "nodes": nodes,
         "nodesWithColors": nodesWithColors
