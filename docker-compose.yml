@@ -38,7 +38,7 @@ services:
     - "80:80"
     - "8000:8000"
     volumes:
-    - ./BCRUPRo/static:/usr/share/nginx/html/static:ro
+    - ./BCRUPro/static:/usr/share/nginx/html/static:ro
     links:
     - web
     depends_on:
