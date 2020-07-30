@@ -20,8 +20,8 @@ services:
       context: .
       dockerfile: ./build/django/Dockerfile
     volumes:
-    - /root/BCRUPro
-    command: python3 manage.py runserver 0.0.0.0:8000
+    - /home/BCRUPro
+    command: python3 /home/BCRUPro/manage.py runserver 0.0.0.0:8000
     
 #    # 在we和db间创建一个网络，使得容器能够通过名字反问另外一个容器
 #    links:
