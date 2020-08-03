@@ -39,6 +39,7 @@ services:
     ports:
     - "80:80"
     - "8001:8001"
+    network_mode: "host"
     volumes:
     - ./BCRUPro/static:/usr/share/nginx/html/static:ro
     links:
