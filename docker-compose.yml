@@ -19,6 +19,8 @@ services:
     build: 
       context: .
       dockerfile: ./build/django/Dockerfile
+    ports:
+    - "8000:8000"
     volumes:
     - /home/BCRUPro
     command: python3 /home/BCRUPro/manage.py runserver 0.0.0.0:8000
@@ -36,7 +38,7 @@ services:
     # 绑定容器端口到主机端口
     ports:
     - "80:80"
-    - "8000:8000"
+    - "8001:8001"
     volumes:
     - ./BCRUPro/static:/usr/share/nginx/html/static:ro
     links:
