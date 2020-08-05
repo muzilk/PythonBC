@@ -9,10 +9,12 @@ https://docs.djangoproject.com/en/3.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.0/ref/settings/
 """
-
+import logging
 import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+import platform
+
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
@@ -142,3 +144,69 @@ STATICFILES_DIRS = [
     ("fonts", os.path.join(STATIC_ROOT, 'datatables', 'fonts')),
 ]
 
+sysstr = platform.system()
+home_path = ""
+if sysstr == 'Linux':
+    home_path = os.environ['HOME']
+elif sysstr == 'Windows':
+    home_path = os.environ['TEMP']
+else:
+    print("sysstr:", sysstr)
+logger = logging.getLogger('django_auth_ldap')
+logger.addHandler(logging.StreamHandler())
+logger.setLevel(logging.DEBUG)
+console_path = os.path.join(home_path, 'ConsoleLog')
+if not os.path.exists(console_path):
+    os.makedirs(console_path)
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': True,
+    'formatters': {
+        'standard': {
+            'format': "[%(asctime)s] %(levelname)s [%(name)s:%(pathname)s:%(lineno)s] %(message)s",
+            'datefmt': "%d/%b/%Y %H:%M:%S",
+        },
+        'exhaustive': {
+            'format': "[%(asctime)s] %(levelname)s [%(name)s:%(pathname)s:%(lineno)s][%(user)s] %(message)s",
+            'datefmt': "%d/%b/%Y %H:%M:%S",
+        },
+    },
+    'handlers': {
+        'console': {
+            'level': 'INFO',
+            'class': 'logging.StreamHandler',
+            'formatter': 'standard'
+        },
+        'consolelogfile': {
+            'level': 'DEBUG',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': os.path.join(console_path, 'console.log'),
+            'maxBytes': 1024 * 1024 * 50,
+            'backupCount': 2,
+            'formatter': 'standard',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console'],
+            'propagate': True,
+            'level': 'WARN',
+        },
+        'django.db.backends': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+            'propagate': False,
+        },
+        'BCRUPro': {
+            'handlers': ['console', 'consolelogfile'],
+            'level': 'DEBUG',
+            'propagate': False,
+        },
+        'login': {
+            'handlers': ['console', 'consolelogfile'],
+            'level': 'DEBUG',
+            'propagate': False,
+        },
+    }
+}
