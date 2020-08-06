@@ -33,17 +33,17 @@ services:
 #    - db
 #    restart: always
 
-  nginx:
-    build: ./build/nginx/
-    # 绑定容器端口到主机端口
-    ports:
-    - "80:80"
-    - "8001:8001"
-    network_mode: "host"
-    volumes:
-    - ./BCRUPro/static:/usr/share/nginx/html/static:ro
-    #links:
-    #- web
-    #depends_on:
-    #- web
-    restart: always
+#  nginx:
+#    build: ./build/nginx/
+#    # 绑定容器端口到主机端口
+#    ports:
+#    - "80:80"
+#    - "8001:8001"
+#    network_mode: "host"
+#    volumes:
+#    - ./BCRUPro/static:/usr/share/nginx/html/static:ro
+#    #links:
+#    #- web
+#    #depends_on:
+#    #- web
+#    restart: always
