@@ -1,17 +1,15 @@
 #!/bin/bash
-web_container_id=`docker ps -a | grep "pythonbc_web:latest" | awk '{print $1}'`
+project_path=/home/ec2-user/PythonBC
+container_id=`docker ps -a | grep "pythonbc_web" | awk '{print $1}'`
+docker cp ${container_id}:/home/BCRUPro/db.sqlite3 ${HOME}
 
-#docker stop ${web_container_id}
-
-pushd /home/ec2-user/PythonBC
-    git pull
-    docker cp BCRUPro ${web_container_id}:/home/
+pushd ${project_path}
+    docker-compose down
+    image_id=`docker images | grep "pythonbc_web" | awk '{print $3}'`
+    docker rmi ${image_id}
+    git reset --hard HEAD^ && git clean -xdf && git pull
+    mv ${HOME}/db.sqlite3 .
+    docker-compose up -d
 popd
-
-#docker run -itd -p 8002:8002 --net=host pythonbc_web:latest /bin/bash
-
-docker exec -d ${web_container_id} python3 /home/BCRUPro/manage.py runserver 0.0.0.0:8002
-
-docker ps -a | grep ${web_container_id}
 
 
