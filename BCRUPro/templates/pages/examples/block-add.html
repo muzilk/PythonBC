@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+    <!-- Main content -->
+{% block content %}
+    <form action="{% url 'create_new_block' %}" method="post">
+      <div class="row">
+        <div class="col-md-6">
+          <div class="card card-primary">
+            <div class="card-header">
+              <h3 class="card-title">General</h3>
+
+              <div class="card-tools">
+                <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
+                  <i class="fas fa-minus"></i></button>
+              </div>
+            </div>
+            <div class="card-body">
+                <div class="form-group">
+                <label for="inputName">Block ID</label>
+                <input name="block_id" type="text" id="inputName" class="form-control">
+                </div>
+             <div class="form-group">
+                <label for="inputName">Node</label>
+                <select name="node_id" class="form-control custom-select">
+                    {% for node in nodes %}
+                        <option>{{ node.device_id }}</option>
+                    {% endfor %}
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="inputName">Previous Hash</label>
+                <input name="previous_hash" type="text" id="inputName" class="form-control">
+              </div>
+            <div class="form-group">
+                <label for="inputName">Proof</label>
+                <input name="proof" type="number" id="inputName" class="form-control">
+              </div>
+            <div class="form-group">
+                <label for="inputName">Revenue</label>
+                <input name="revenue" type="number" id="inputName" class="form-control">
+              </div>
+             <div class="form-group">
+                <label for="inputName">Timestamp</label>
+                <input name="timestamp" type="text" id="inputName" class="form-control">
+            </div>
+            </div>
+            <!-- /.card-body -->
+          </div>
+          <!-- /.card -->
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <a href="{% url 'index' %}" class="btn btn-secondary">Cancel</a>
+          <input type="submit" value="Create new block" class="btn btn-success float-right">
+        </div>
+      </div>
+    </form>
+{% endblock %}
+
+

@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+    <!-- Main content -->
+{% block content %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+            <!-- /.card -->
+
+                <div class="card card-primary">
+                    <div class="card-header">
+                        <h3 class="card-title">Block</h3>
+                    </div>
+                </div>
+                <p></p>
+
+                <div class="card-body">
+                    <table id="details_table1" class="table-bordered table-striped" width="50%" style="float:left;">
+                        <tr>
+                            <th>Block id</th>
+                            <td>{{ block.block_id }}</td>
+                        </tr>
+                        <tr>
+                            <th>Node</th>
+                            <td>{{ block.node.device_id }}</td>
+                        </tr>
+                        <tr>
+                            <th>Previous Hash</th>
+                            <td>{{ block.previous_hash }}</td>
+                        </tr>
+                    </table>
+                    <table id="details_table2" class="table-bordered table-striped" width="50%" style="float:right;">
+                        <tr>
+                            <th>Proof</th>
+                            <td>{{ block.proof }}</td>
+                        </tr>
+                        <tr>
+                            <th>Revenue</th>
+                            <td>{{ block.revenue }}</td>
+                        </tr>
+                        <tr>
+                            <th>Create Time</th>
+                            <td>{{ block.create_at }}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

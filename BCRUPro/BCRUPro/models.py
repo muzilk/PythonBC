@@ -24,8 +24,10 @@ class Node(models.Model):
 class Block(models.Model):
     block_id = models.TextField(unique=True)
     node = models.ForeignKey(Node, primary_key=False, blank=False, on_delete=PROTECT)
-    revenue = models.BigIntegerField()
-    create_at = models.DateTimeField(auto_now=True)
+    previous_hash = models.TextField(default="1")
+    proof = models.IntegerField(default=0)
+    revenue = models.IntegerField(default=0)
+    create_at = models.DateTimeField(auto_created=True)
 
     @staticmethod
     def get_threader():

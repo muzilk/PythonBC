@@ -39,6 +39,18 @@
                         <td>{{ block.node }}</td>
                         <td>{{ block.revenue }}</td>
                         <td>{{ block.create_at }}</td>
+                        <td>
+                            <form method="post" action="{% url 'block_details' %}">
+                                <input type="hidden" name="block_id" value="{{ block.block_id }}">
+                                <input type="submit" value="details" class="btn btn-sm btn-info">
+                            </form>
+                        </td>
+                        <td>
+                            <form method="post" action="{% url 'block_delete' %}">
+                                <input type="hidden" name="block_id" value="{{ block.block_id }}">
+                                <input type="submit" value="delete" class="btn btn-sm btn-danger">
+                            </form>
+                        </td>
                     </tr>
                   {% endfor %}
                   </tbody>
