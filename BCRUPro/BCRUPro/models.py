@@ -37,3 +37,34 @@ class Block(models.Model):
         return self.block_id
 
 
+class InviteBids(models.Model):
+    invitation_id = models.TextField(unique=True)
+    node = models.ForeignKey(Node, primary_key=False, blank=False, on_delete=PROTECT)
+    network_type = models.TextField()
+    area = models.TextField()
+    time = models.TextField()
+    number = models.TextField()
+    data = models.TextField()
+    create_at = models.DateTimeField(auto_now=True)
+
+    @staticmethod
+    def get_threader():
+        return ["ID", "Node", "Network Type", "Area", "Time", "Number", "Data", "Create Time"]
+
+    def __str__(self):
+        return self.invitation_id
+
+
+class SubmitBids(models.Model):
+    bid = models.TextField(unique=True)
+    invite_bid = models.ForeignKey(InviteBids, primary_key=False, blank=False, on_delete=PROTECT)
+    price = models.IntegerField()
+    create_at = models.DateTimeField(auto_now=True)
+
+    @staticmethod
+    def get_threader():
+        return ["BID", "Price", "Create Time"]
+
+    def __str__(self):
+        return self.bid
+

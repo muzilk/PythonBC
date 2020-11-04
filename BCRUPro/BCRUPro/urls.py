@@ -43,4 +43,9 @@ urlpatterns = [
     re_path(r'^block_details', block_details, name='block_details'),
     re_path(r'^block_delete', block_delete, name='block_delete'),
     re_path(r'^create_new_block', create_new_block, name='create_new_block'),
+
+    re_path(r'^invite_bids_display', invite_bids_display, name='invite_bids_display'),
+    re_path(r'^create_invite_bids', create_invite_bids, name='create_invite_bids'),
+    re_path(r'^offer_bids', offer_bids, name='offer_bids'),
+    re_path(r'^check_offers', check_offers, name='check_offers'),
 ]

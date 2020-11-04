@@ -42,6 +42,8 @@ def login(request):
                 request.session['user_name'] = user.name
                 context = get_nodes(request)
                 context.update(get_revenue_data(request))
+                owner = User.objects.get(name=user.name)
+                context.update({"owner": owner})
                 return render(request, 'index.html', context=context)
             else:
                 return render(request, 'pages/examples/login.html', {"message": "Password is error"})
@@ -57,6 +59,7 @@ def register(request):
         name = request.POST.get('name')
         email = request.POST.get('email')
         password = request.POST.get('password')
+        role = request.POST.get('role')
         password_confirm = request.POST.get('password_confirm')
         if password != password_confirm:
             return render(request, 'pages/examples/register.html', {"message": "The two passwords do not match"})
@@ -72,6 +75,7 @@ def register(request):
             new_user.name = name
             new_user.email = email
             new_user.password = hash_code(password)
+            new_user.role = role
             new_user.save()
             return render(request, 'pages/examples/login.html')
 

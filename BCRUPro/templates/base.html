@@ -179,7 +179,7 @@
           <img src="{% static 'adminlte/dist/img/user2-160x160.jpg' %}" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-          <a href="#" class="d-block">Alexander Pierce</a>
+          <a href="#" class="d-block">{{ owner.name }}</a>
         </div>
       </div>
 
@@ -274,6 +274,49 @@
                   <p>New block</p>
                 </a>
               </li>
+            </ul>
+          </li>
+          <li class="nav-item has-treeview">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-table"></i>
+              <p>
+                Bids
+                <i class="fas fa-angle-left right"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              {% if owner.role == "customer" %}
+              <li class="nav-item">
+                <a href="{% url 'invite_bids_display' %}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Invite bids</p>
+                </a>
+              </li>
+              {% endif %}
+                {% if owner.role == "csp" %}
+              <li class="nav-item">
+                <a href="{% url 'invite_bids_display' %}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Submit bids</p>
+                </a>
+              </li>
+                {% endif %}
+                {% if owner.role == "customer" %}
+              <li class="nav-item">
+                <a href="{% url 'block_display' %}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Sign bids</p>
+                </a>
+              </li>
+                {% endif %}
+                {% if owner.role == "chain" %}
+              <li class="nav-item">
+                <a href="{% url 'block_display' %}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Settlement bids</p>
+                </a>
+              </li>
+                {% endif %}
             </ul>
           </li>
         </ul>

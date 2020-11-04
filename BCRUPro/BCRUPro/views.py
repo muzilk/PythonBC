@@ -12,7 +12,7 @@ from django.contrib import messages
 from django.http import Http404, HttpResponse
 from django.views.decorators.http import require_GET, require_POST, require_http_methods
 
-from BCRUPro.models import Node, Block
+from BCRUPro.models import *
 from login.models import User
 
 
@@ -63,7 +63,10 @@ def get_revenue_data(request):
 def index(request):
     context = get_nodes(request)
     context.update(get_revenue_data(request))
+    owner_name = request.session['user_name']
     context.update({"owner_name": request.session['user_name']})
+    owner = User.objects.get(name=owner_name)
+    context.update({"owner": owner})
     return render(request, 'index.html', context=context)
 
 
@@ -164,4 +167,77 @@ def node_edit(request):
     return render(request, 'pages/examples/node-edit.html', context=get_nodes(request))
 
 
+@require_GET
+def invite_bids_display(request):
+    owner_name = request.session['user_name']
+    owner = User.objects.get(name=owner_name)
+    invite_bids = InviteBids.objects.all()
+    theader = InviteBids.get_threader()
+    return render(request, 'pages/examples/invite-bids-display.html', locals())
 
+
+@require_http_methods(['POST', 'GET'])
+def create_invite_bids(request):
+    if request.method == 'GET':
+        owner_name = request.session['user_name']
+        owner = User.objects.get(name=owner_name)
+        nodes = Node.objects.filter(owner=owner)
+        return render(request, 'pages/examples/invite-bids-create.html', locals())
+    else:
+        invitation_id = request.POST.get('invitation_id', None)
+        node_id = request.POST.get('node_id', None)
+        network_type = request.POST.get('network_type', None)
+        area = request.POST.get('area', None)
+        time = request.POST.get('time', None)
+        number = request.POST.get('number', None)
+        data = request.POST.get('data', None)
+        invite_bid = InviteBids.objects.create(invitation_id=invitation_id,
+                                                node=Node.objects.get(device_id=node_id),
+                                                network_type=network_type,
+                                                area=area, time=time,
+                                                number=number, data=data)
+        invite_bid.save()
+
+        invite_bids = InviteBids.objects.all()
+        theader = InviteBids.get_threader()
+        owner_name = request.session['user_name']
+        owner = User.objects.get(name=owner_name)
+        return render(request, 'pages/examples/invite-bids-display.html', locals())
+
+
+
+@require_http_methods(['POST', 'GET'])
+def offer_bids(request):
+    if request.method == 'GET':
+        invitation_id = request.GET.get('invitation_id', None)
+        invite_bid = InviteBids.objects.get(invitation_id=invitation_id)
+        owner_name = request.session['user_name']
+        owner = User.objects.get(name=owner_name)
+        return render(request, 'pages/examples/offer-bids.html', locals())
+    else:
+        invitation_id = request.POST.get('invitation_id', None)
+        invite_bid = InviteBids.objects.get(invitation_id=invitation_id)
+
+        price = request.POST.get('price', None)
+        now = time.strftime('%Y%m%d%H%M%S', time.localtime(time.time()))
+        bid = "BID" + now
+        submit_bid = SubmitBids.objects.create(bid=bid, invite_bid=invite_bid, price=price)
+        submit_bid.save()
+        submit_message = "sumbit success"
+
+        owner_name = request.session['user_name']
+        owner = User.objects.get(name=owner_name)
+        return render(request, 'pages/examples/offer-bids.html', locals())
+
+
+@require_http_methods(['POST', 'GET'])
+def check_offers(request):
+    if request.method == 'GET':
+        invitation_id = request.GET.get('invitation_id', None)
+        invite_bid = InviteBids.objects.get(invitation_id=invitation_id)
+        submit_bids = SubmitBids.objects.filter(invite_bid=invite_bid)
+        theader = SubmitBids.get_threader()
+
+        owner_name = request.session['user_name']
+        owner = User.objects.get(name=owner_name)
+        return render(request, 'pages/examples/submit-bids-display.html', locals())

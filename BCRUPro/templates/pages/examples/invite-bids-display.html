@@ -1,0 +1,116 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block head %}
+  <title>users</title>
+  <!-- DataTables -->
+  <link rel="stylesheet" href="{% static 'adminlte/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css' %}">
+  <link rel="stylesheet" href="{% static 'adminlte/plugins/datatables-responsive/css/responsive.bootstrap4.min.css' %}">
+{% endblock %}
+
+{% block content %}
+    <!-- Main content -->
+    <div class="container-fluid">
+    <div class="row">
+      <div class="col-12">
+
+        <!-- /.card -->
+
+        <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">Invitation Bids</h3>
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body">
+                <table id="example" class="table table-bordered table-striped">
+                  <thead>
+                  <tr>
+                      {% for th in theader %}
+                        <th>
+                            <strong>{{ th }}</strong>
+                        </th>
+                      {% endfor %}
+                  </tr>
+                  </thead>
+                  <tbody>
+                  {% for bid in invite_bids %}
+                    <tr>
+                        <td>{{ bid.invitation_id }}</td>
+                        <td>{{ bid.node }}</td>
+                        <td>{{ bid.network_type }}</td>
+                        <td>{{ bid.area }}</td>
+                        <td>{{ bid.time }}</td>
+                        <td>{{ bid.number }}</td>
+                        <td>{{ bid.data }}</td>
+                        <td>{{ bid.create_at }}</td>
+                        {% if owner.role == "customer" %}
+                        <td>
+                            <form method="get" action="{% url 'check_offers' %}">
+                                <input type="hidden" name="invitation_id" value="{{ bid.invitation_id }}">
+                                <input type="submit" value="Check Offer" class="btn btn-sm btn-info">
+                            </form>
+                        </td>
+                        <td>
+                            <form method="post" action="{% url 'block_display' %}"> {# bids_delete #}
+                                <input type="hidden" name="invitation_id" value="{{ bid.invitation_id }}">
+                                <input type="submit" value="Close" class="btn btn-sm btn-danger">
+                            </form>
+                        </td>
+                        {% endif %}
+                        {% if owner.role == "csp" %}
+                         <td>
+                            <form method="get" action="{% url 'offer_bids' %}">
+                                <input type="hidden" name="invitation_id" value="{{ bid.invitation_id }}">
+                                <input type="submit" value="Offer Bids" class="btn btn-sm btn-info">
+                            </form>
+                         </td>
+                        {% endif %}
+                    </tr>
+                  {% endfor %}
+                  </tbody>
+                </table>
+              {% if owner.role == "customer" %}
+                <form method="get" action="{% url 'create_invite_bids' %}" style="float:left">
+                        <input type="submit" value="Create Invitation Bid" class="btn btn-sm btn-info">
+                </form>
+              {% endif %}
+              </div>
+              <!-- /.card-body -->
+            </div>
+        <!-- /.card -->
+      </div>
+      <!-- /.col -->
+    </div>
+    <!-- /.row -->
+    </div>
+    <!-- /.content -->
+{% endblock %}
+
+
+{% block script %}
+    <!-- DataTables -->
+    <script src="{% static 'adminlte/plugins/datatables/jquery.dataTables.min.js' %}"></script>
+    <script src="{% static 'adminlte/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js' %}"></script>
+    <script src="{% static 'adminlte/plugins/datatables-responsive/js/dataTables.responsive.min.js' %}"></script>
+    <script src="{% static 'adminlte/plugins/datatables-responsive/js/responsive.bootstrap4.min.js' %}"></script>
+
+<!-- page script -->
+
+<script>
+  $(function () {
+    $("#example").DataTable({
+      "responsive": true,
+      "autoWidth": false,
+    });
+    $('#example1').DataTable({
+      "paging": true,
+      "lengthChange": false,
+      "searching": true,
+      "ordering": true,
+      "info": true,
+      "autoWidth": false,
+      "responsive": true,
+    });
+  });
+</script>
+{% endblock %}
