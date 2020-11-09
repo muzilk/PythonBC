@@ -30,6 +30,13 @@
                             <strong>{{ th }}</strong>
                         </th>
                       {% endfor %}
+                      {% if owner.role == "customer" %}
+                          <th></th>
+                          <th></th>
+                      {% endif %}
+                      {% if owner.role == "csp" %}
+                          <th></th>
+                      {% endif %}
                   </tr>
                   </thead>
                   <tbody>

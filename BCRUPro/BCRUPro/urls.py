@@ -48,4 +48,5 @@ urlpatterns = [
     re_path(r'^create_invite_bids', create_invite_bids, name='create_invite_bids'),
     re_path(r'^offer_bids', offer_bids, name='offer_bids'),
     re_path(r'^check_offers', check_offers, name='check_offers'),
+    re_path(r'^sign_bids', sign_bids, name='sign_bids'),
 ]

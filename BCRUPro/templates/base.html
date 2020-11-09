@@ -301,14 +301,6 @@
                 </a>
               </li>
                 {% endif %}
-                {% if owner.role == "customer" %}
-              <li class="nav-item">
-                <a href="{% url 'block_display' %}" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Sign bids</p>
-                </a>
-              </li>
-                {% endif %}
                 {% if owner.role == "chain" %}
               <li class="nav-item">
                 <a href="{% url 'block_display' %}" class="nav-link">

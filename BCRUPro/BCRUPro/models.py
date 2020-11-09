@@ -38,13 +38,24 @@ class Block(models.Model):
 
 
 class InviteBids(models.Model):
+    sign_stat = (
+        ('signed', 'signed'),
+        ('unsigned', 'unsigned'),
+    )
+    process_stat = (
+        ('opening', 'opening'),
+        ('closed', 'closed'),
+    )
     invitation_id = models.TextField(unique=True)
+    owner = models.ForeignKey(User, primary_key=False, blank=False, on_delete=PROTECT)
     node = models.ForeignKey(Node, primary_key=False, blank=False, on_delete=PROTECT)
     network_type = models.TextField()
     area = models.TextField()
     time = models.TextField()
     number = models.TextField()
     data = models.TextField()
+    sign_status = models.CharField(max_length=32, choices=sign_stat, default='unsigned')
+    process_status = models.CharField(max_length=32, choices=process_stat, default='opening')
     create_at = models.DateTimeField(auto_now=True)
 
     @staticmethod
@@ -56,14 +67,20 @@ class InviteBids(models.Model):
 
 
 class SubmitBids(models.Model):
+    stat = (
+        ('signed', 'signed'),
+        ('unsigned', 'unsigned'),
+    )
     bid = models.TextField(unique=True)
+    owner = models.ForeignKey(User, primary_key=False, blank=False, on_delete=PROTECT)
     invite_bid = models.ForeignKey(InviteBids, primary_key=False, blank=False, on_delete=PROTECT)
     price = models.IntegerField()
+    status = models.CharField(max_length=32, choices=stat, default='unsigned')
     create_at = models.DateTimeField(auto_now=True)
 
     @staticmethod
     def get_threader():
-        return ["BID", "Price", "Create Time"]
+        return ["BID", "Price", "Create Time", "Status"]
 
     def __str__(self):
         return self.bid

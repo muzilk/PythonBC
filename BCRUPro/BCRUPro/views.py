@@ -108,7 +108,7 @@ def create_new_node(request):
 
         context = get_nodes(request)
         context.update(get_revenue_data(request))
-        context.update({"owner_name": request.session['user_name']})
+        context.update({"owner": owner})
         return render(request, 'index.html', context=context)
 
 
@@ -171,7 +171,10 @@ def node_edit(request):
 def invite_bids_display(request):
     owner_name = request.session['user_name']
     owner = User.objects.get(name=owner_name)
-    invite_bids = InviteBids.objects.all()
+    if owner.role == "customer":
+        invite_bids = InviteBids.objects.filter(owner=owner)
+    else:
+        invite_bids = InviteBids.objects.all()
     theader = InviteBids.get_threader()
     return render(request, 'pages/examples/invite-bids-display.html', locals())
 
@@ -184,24 +187,27 @@ def create_invite_bids(request):
         nodes = Node.objects.filter(owner=owner)
         return render(request, 'pages/examples/invite-bids-create.html', locals())
     else:
-        invitation_id = request.POST.get('invitation_id', None)
+        owner_name = request.session['user_name']
+        owner = User.objects.get(name=owner_name)
+        now = time.strftime('%Y%m%d%H%M%S', time.localtime(time.time()))
+        invitation_id = "INBID" + now
         node_id = request.POST.get('node_id', None)
         network_type = request.POST.get('network_type', None)
         area = request.POST.get('area', None)
-        time = request.POST.get('time', None)
+        i_time = request.POST.get('time', None)
         number = request.POST.get('number', None)
         data = request.POST.get('data', None)
         invite_bid = InviteBids.objects.create(invitation_id=invitation_id,
-                                                node=Node.objects.get(device_id=node_id),
-                                                network_type=network_type,
-                                                area=area, time=time,
-                                                number=number, data=data)
+                                               owner=owner, node=Node.objects.get(device_id=node_id), 
+                                               network_type=network_type, area=area, time=i_time,
+                                               number=number, data=data)
         invite_bid.save()
 
-        invite_bids = InviteBids.objects.all()
+        if owner.role == "customer":
+            invite_bids = InviteBids.objects.filter(owner=owner)
+        else:
+            invite_bids = InviteBids.objects.all()
         theader = InviteBids.get_threader()
-        owner_name = request.session['user_name']
-        owner = User.objects.get(name=owner_name)
         return render(request, 'pages/examples/invite-bids-display.html', locals())
 
 
@@ -215,18 +221,19 @@ def offer_bids(request):
         owner = User.objects.get(name=owner_name)
         return render(request, 'pages/examples/offer-bids.html', locals())
     else:
+        owner_name = request.session['user_name']
+        owner = User.objects.get(name=owner_name)
+        
         invitation_id = request.POST.get('invitation_id', None)
         invite_bid = InviteBids.objects.get(invitation_id=invitation_id)
 
         price = request.POST.get('price', None)
         now = time.strftime('%Y%m%d%H%M%S', time.localtime(time.time()))
         bid = "BID" + now
-        submit_bid = SubmitBids.objects.create(bid=bid, invite_bid=invite_bid, price=price)
+        submit_bid = SubmitBids.objects.create(bid=bid, owner=owner, invite_bid=invite_bid, price=price)
         submit_bid.save()
         submit_message = "sumbit success"
 
-        owner_name = request.session['user_name']
-        owner = User.objects.get(name=owner_name)
         return render(request, 'pages/examples/offer-bids.html', locals())
 
 
@@ -241,3 +248,21 @@ def check_offers(request):
         owner_name = request.session['user_name']
         owner = User.objects.get(name=owner_name)
         return render(request, 'pages/examples/submit-bids-display.html', locals())
+
+
+@require_http_methods(['POST'])
+def sign_bids(request):
+    bid = request.POST.get('bid', None)
+    bid_obj = SubmitBids.objects.get(bid=bid)
+    bid_obj.status = "signed"
+    bid_obj.invite_bid.sign_status = "signed"
+    bid_obj.invite_bid.process_stat = "closed"
+    bid_obj.save()
+    bid_obj.invite_bid.save()
+
+    invite_bid = bid_obj.invite_bid
+    submit_bids = SubmitBids.objects.filter(invite_bid=invite_bid)
+    theader = SubmitBids.get_threader()
+    owner_name = request.session['user_name']
+    owner = User.objects.get(name=owner_name)
+    return render(request, 'pages/examples/submit-bids-display.html', locals())
