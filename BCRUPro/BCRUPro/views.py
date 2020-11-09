@@ -252,11 +252,13 @@ def check_offers(request):
 
 @require_http_methods(['POST'])
 def sign_bids(request):
+    owner_name = request.session['user_name']
     bid = request.POST.get('bid', None)
     bid_obj = SubmitBids.objects.get(bid=bid)
     bid_obj.status = "signed"
     bid_obj.invite_bid.sign_status = "signed"
     bid_obj.invite_bid.process_stat = "closed"
+    bid_obj.invite_bid.winner = owner_name
     bid_obj.save()
     bid_obj.invite_bid.save()
 

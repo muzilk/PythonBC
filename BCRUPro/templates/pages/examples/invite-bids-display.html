@@ -32,7 +32,6 @@
                       {% endfor %}
                       {% if owner.role == "customer" %}
                           <th></th>
-                          <th></th>
                       {% endif %}
                       {% if owner.role == "csp" %}
                           <th></th>
@@ -50,27 +49,31 @@
                         <td>{{ bid.number }}</td>
                         <td>{{ bid.data }}</td>
                         <td>{{ bid.create_at }}</td>
+                        <td>{{ bid.winner }}</td>
                         {% if owner.role == "customer" %}
-                        <td>
-                            <form method="get" action="{% url 'check_offers' %}">
-                                <input type="hidden" name="invitation_id" value="{{ bid.invitation_id }}">
-                                <input type="submit" value="Check Offer" class="btn btn-sm btn-info">
-                            </form>
-                        </td>
-                        <td>
-                            <form method="post" action="{% url 'block_display' %}"> {# bids_delete #}
-                                <input type="hidden" name="invitation_id" value="{{ bid.invitation_id }}">
-                                <input type="submit" value="Close" class="btn btn-sm btn-danger">
-                            </form>
-                        </td>
+                            <td>
+                                <form method="get" action="{% url 'check_offers' %}">
+                                    <input type="hidden" name="invitation_id" value="{{ bid.invitation_id }}">
+                                    <input type="submit" value="Check Offer" class="btn btn-sm btn-info">
+                                </form>
+                            </td>
+{#                        <td>#}
+{#                            <form method="post" action="{% url 'block_display' %}"> {# bids_delete #}
+{#                                <input type="hidden" name="invitation_id" value="{{ bid.invitation_id }}">#}
+{#                                <input type="submit" value="Close" class="btn btn-sm btn-danger">#}
+{#                            </form>#}
+{#                        </td>#}
                         {% endif %}
                         {% if owner.role == "csp" %}
-                         <td>
-                            <form method="get" action="{% url 'offer_bids' %}">
-                                <input type="hidden" name="invitation_id" value="{{ bid.invitation_id }}">
-                                <input type="submit" value="Offer Bids" class="btn btn-sm btn-info">
-                            </form>
-                         </td>
+                            {% if bid.sign_status == "unsigned" %}
+                                 <td>
+                                    <form method="get" action="{% url 'offer_bids' %}">
+                                        <input type="hidden" name="invitation_id" value="{{ bid.invitation_id }}">
+                                        <input type="submit" value="Offer Bids" class="btn btn-sm btn-info">
+                                    </form>
+                                 </td>
+                             {% else %}
+                             {% endif %}
                         {% endif %}
                     </tr>
                   {% endfor %}

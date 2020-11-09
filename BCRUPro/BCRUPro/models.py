@@ -55,12 +55,13 @@ class InviteBids(models.Model):
     number = models.TextField()
     data = models.TextField()
     sign_status = models.CharField(max_length=32, choices=sign_stat, default='unsigned')
+    winner = models.TextField()
     process_status = models.CharField(max_length=32, choices=process_stat, default='opening')
     create_at = models.DateTimeField(auto_now=True)
 
     @staticmethod
     def get_threader():
-        return ["ID", "Node", "Network Type", "Area", "Time", "Number", "Data", "Create Time"]
+        return ["ID", "Node", "Network Type", "Area", "Time", "Number", "Data", "Create Time", "Winner"]
 
     def __str__(self):
         return self.invitation_id
