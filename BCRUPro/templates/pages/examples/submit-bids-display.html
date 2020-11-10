@@ -41,9 +41,9 @@
                         <td>{{ bid.bid }}</td>
                         <td>{{ bid.price }}</td>
                         <td>{{ bid.create_at }}</td>
-                        <td>{{ bid.status }}</td>
+                        <td>{{ bid.sign_status }}</td>
                         {% if owner.role == "customer" %}
-                            {% if bid.status == "unsigned" and bid.invite_bid.sign_status == "unsigned"%}
+                            {% if not bid.status and not bid.invite_bid.sign_status %}
                                 <td>
                                     <form method="post" action="{% url 'sign_bids' %}">
                                         <input type="hidden" name="bid" value="{{ bid.bid }}">

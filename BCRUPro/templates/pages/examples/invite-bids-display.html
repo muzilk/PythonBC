@@ -65,7 +65,7 @@
 {#                        </td>#}
                         {% endif %}
                         {% if owner.role == "csp" %}
-                            {% if bid.sign_status == "unsigned" %}
+                            {% if not bid.sign_status %}
                                  <td>
                                     <form method="get" action="{% url 'offer_bids' %}">
                                         <input type="hidden" name="invitation_id" value="{{ bid.invitation_id }}">
