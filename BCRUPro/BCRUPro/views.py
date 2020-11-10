@@ -268,3 +268,11 @@ def sign_bids(request):
     owner_name = request.session['user_name']
     owner = User.objects.get(name=owner_name)
     return render(request, 'pages/examples/submit-bids-display.html', locals())
+
+
+def deploy_bids(request):
+    try:
+        a = 1+1
+    except Exception as e:
+        return HttpResponse('{"status":"failed"}', content_type='application/json')
+    return HttpResponse('{"status":"success"}', content_type='application/json')

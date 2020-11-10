@@ -73,6 +73,11 @@
                                     </form>
                                  </td>
                              {% else %}
+                                {% if owner.name == bid.winner %}
+                                <td>
+                                    <button id="deploy_bids" href="#" class="btn btn-sm btn-info">Deploy</button>
+                                </td>
+                                {% endif %}
                              {% endif %}
                         {% endif %}
                     </tr>
@@ -121,6 +126,23 @@
       "autoWidth": false,
       "responsive": true,
     });
+  });
+
+  $('#deploy_bids').click(function(){
+        $.ajax({
+            type:'post',
+            traditional :true,
+            url:'{% url 'deploy_bids' %}',
+            dataType: 'json',
+            success:function(data){
+                if(data.status == 'success'){
+                    alert("Success");
+                }else {
+                    alert("Failed");
+                }
+            }
+        });
+        return false;
   });
 </script>
 {% endblock %}
