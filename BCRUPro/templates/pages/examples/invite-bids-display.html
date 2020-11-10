@@ -72,13 +72,17 @@
                                         <input type="submit" value="Offer Bids" class="btn btn-sm btn-info">
                                     </form>
                                  </td>
-                             {% else %}
+                            {% else %}
                                 {% if owner.name == bid.winner %}
-                                <td>
-                                    <button id="deploy_bids" href="#" class="btn btn-sm btn-info">Deploy</button>
-                                </td>
+                                    <td>
+                                        <button id="deploy_bids" href="#" class="btn btn-sm btn-info">Deploy</button>
+                                    </td>
+                                {% else %}
+                                    <td>
+                                        <button id="verify_bids" href="#" class="btn btn-sm btn-info">Verify</button>
+                                    </td>
                                 {% endif %}
-                             {% endif %}
+                            {% endif %}
                         {% endif %}
                     </tr>
                   {% endfor %}
@@ -129,6 +133,23 @@
   });
 
   $('#deploy_bids').click(function(){
+        $.ajax({
+            type:'post',
+            traditional :true,
+            url:'{% url 'deploy_bids' %}',
+            dataType: 'json',
+            success:function(data){
+                if(data.status == 'success'){
+                    alert("Success");
+                }else {
+                    alert("Failed");
+                }
+            }
+        });
+        return false;
+  });
+
+    $('#verify_bids').click(function(){
         $.ajax({
             type:'post',
             traditional :true,

@@ -270,6 +270,7 @@ def sign_bids(request):
     return render(request, 'pages/examples/submit-bids-display.html', locals())
 
 
+@require_http_methods(['POST'])
 def deploy_bids(request):
     try:
         a = 1+1
