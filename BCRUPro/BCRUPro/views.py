@@ -1,10 +1,4 @@
 import time
-import random
-
-from django.contrib.auth import authenticate
-from django.contrib.auth.decorators import login_required
-from django.shortcuts import render
-
 # Create your views here.
 from django.http import HttpResponse
 from django.shortcuts import render
@@ -13,6 +7,7 @@ from django.http import Http404, HttpResponse
 from django.views.decorators.http import require_GET, require_POST, require_http_methods
 
 from BCRUPro.models import *
+from BCRUPro.utils import send_block
 from login.models import User
 
 
@@ -203,6 +198,9 @@ def create_invite_bids(request):
                                                number=number, data=data)
         invite_bid.save()
 
+        # send block
+        feedback_message = send_block(owner_name, "csp1", invite_bid)
+
         if owner.role == "customer":
             invite_bids = InviteBids.objects.filter(owner=owner)
         else:
@@ -232,6 +230,10 @@ def offer_bids(request):
         bid = "BID" + now
         submit_bid = SubmitBids.objects.create(bid=bid, owner=owner, invite_bid=invite_bid, price=price)
         submit_bid.save()
+        
+        # send block
+        feedback_message = send_block(owner_name, "csp1", invite_bid)
+        
         submit_message = "sumbit success"
 
         return render(request, 'pages/examples/offer-bids.html', locals())
@@ -266,6 +268,9 @@ def sign_bids(request):
     theader = SubmitBids.get_threader()
     owner_name = request.session['user_name']
     owner = User.objects.get(name=owner_name)
+    # send block
+    feedback_message = send_block(owner_name, "csp1", bid_obj.invite_bid)
+    
     return render(request, 'pages/examples/submit-bids-display.html', locals())
 
 

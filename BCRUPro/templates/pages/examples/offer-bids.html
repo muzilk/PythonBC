@@ -107,5 +107,8 @@
         <div style="margin: auto"><h1 style="margin: auto">Your Price {{ price }}</h1></div>
         <div class="alert alert-info">{{ submit_message }}</div>
     {% endif %}
+    {% if feedback_message %}
+        <div class="alert alert-warning"><p>{{ feedback_message }}</p></div>
+    {% endif %}
 
 {% endblock %}
