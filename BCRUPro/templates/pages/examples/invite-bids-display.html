@@ -103,7 +103,10 @@
     <!-- /.row -->
     </div>
     {% if feedback_message %}
-        <div class="alert alert-warning"><p>{{ feedback_message }}</p></div>
+        <div class="alert alert-warning">
+            <h>Feedback Message</h>
+            <p>{{ feedback_message }}</p>
+        </div>
     {% endif %}
     <!-- /.content -->
 {% endblock %}

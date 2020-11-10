@@ -33,6 +33,7 @@ def send_block(sender, recipient, invite_bid):
     
     data = {"sender": sender, "recipient": recipient, "timestart": timestart, "timeend": timeend, "data": hash_str}
     try:
+        requests.post(url=url, headers=headers, data=json.dumps(data))
         response = requests.post(url=url, headers=headers, data=json.dumps(data))
         return response.text
     except Exception as e:
