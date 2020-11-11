@@ -50,8 +50,14 @@
                                         <input type="submit" value="Signed" class="btn btn-sm btn-info">
                                     </form>
                                 </td>
+                            {% else %}
+                                {% if bid.sign_status and bid.invite_bid.deploy_status %}
+                                    <td>
+                                        <button id="pay_bids" href="#" class="btn btn-sm btn-info">Pay</button>
+                                    </td>
                                 {% else %}
-                                <td></td>
+                                    <td></td>
+                                {% endif %}
                             {% endif %}
                         {% endif %}
                     </tr>
@@ -101,6 +107,23 @@
       "autoWidth": false,
       "responsive": true,
     });
+  });
+
+  $('#pay_bids').click(function(){
+        $.ajax({
+            type:'get',
+            traditional :true,
+            url:'{% url 'deploy_bids' %}',
+            dataType: 'json',
+            success:function(data){
+                if(data.status == 'success'){
+                    alert("Success");
+                }else {
+                    alert("Failed");
+                }
+            }
+        });
+        return false;
   });
 </script>
 {% endblock %}

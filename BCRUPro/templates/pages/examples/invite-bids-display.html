@@ -75,7 +75,10 @@
                             {% else %}
                                 {% if owner.name == bid.winner %}
                                     <td>
-                                        <button id="deploy_bids" href="#" class="btn btn-sm btn-info">Deploy</button>
+                                        <form method="post" action="{% url 'deploy_bids' %}">
+                                            <input type="hidden" name="invitation_id" value="{{ bid.invitation_id }}">
+                                            <input type="submit" value="Deploy" class="btn btn-sm btn-info">
+                                        </form>
                                     </td>
                                 {% else %}
                                     <td>
@@ -157,7 +160,7 @@
 
     $('#verify_bids').click(function(){
         $.ajax({
-            type:'post',
+            type:'get',
             traditional :true,
             url:'{% url 'deploy_bids' %}',
             dataType: 'json',

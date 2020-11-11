@@ -274,10 +274,15 @@ def sign_bids(request):
     return render(request, 'pages/examples/submit-bids-display.html', locals())
 
 
-@require_http_methods(['POST'])
+@require_http_methods(['POST', 'GET'])
 def deploy_bids(request):
-    try:
-        a = 1+1
-    except Exception as e:
-        return HttpResponse('{"status":"failed"}', content_type='application/json')
-    return HttpResponse('{"status":"success"}', content_type='application/json')
+    if request.method == 'GET':
+        return HttpResponse('{"status":"success"}', content_type='application/json')
+    else:
+        invitation_id = request.POST.get('invitation_id', None)
+        invite_bid = InviteBids.objects.get(invitation_id=invitation_id)
+        invite_bid.deploy_status = True
+        invite_bid.save()
+        owner_name = request.session['user_name']
+        owner = User.objects.get(name=owner_name)
+        return render(request, 'pages/examples/invite-bids-deploy.html', locals())
