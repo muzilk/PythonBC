@@ -1,3 +1,4 @@
+import datetime
 import time
 # Create your views here.
 from django.http import HttpResponse
@@ -86,6 +87,8 @@ def user_manage(request):
 def block_display(request):
     blocks = Block.objects.all()
     theader = Block.get_threader()
+    owner_name = request.session['user_name']
+    owner = User.objects.get(name=owner_name)
     return render(request, 'pages/tables/blocks.html', locals())
 
 
@@ -286,3 +289,67 @@ def deploy_bids(request):
         owner_name = request.session['user_name']
         owner = User.objects.get(name=owner_name)
         return render(request, 'pages/examples/invite-bids-deploy.html', locals())
+    
+
+@require_http_methods(['GET', "POST"])
+def mall(request):
+    if request.method == 'GET':
+        owner_name = request.session['user_name']
+        owner = User.objects.get(name=owner_name)
+        product1 = Product.objects.all()[0:3]
+        product2 = Product.objects.all()[3:]
+        owner_name = request.session['user_name']
+        owner = User.objects.get(name=owner_name)
+        return render(request, 'pages/examples/mall.html', locals())
+    
+
+@require_http_methods(['POST'])
+def sign_order(request):
+    if request.method == 'POST':
+        product_name = request.POST.get('product_name', None)
+        product = Product.objects.get(name=product_name)
+        owner_name = request.session['user_name']
+        owner = User.objects.get(name=owner_name)
+        return render(request, 'sign_order.html', locals())
+
+
+@require_http_methods(['POST'])
+def buy(request):
+    if request.method == 'POST':
+        product_name = request.POST.get('product_name', None)
+        user_number = int(request.POST.get('user_number', None))
+        latency = int(request.POST.get('latency', None))
+        bandwidth_down = int(request.POST.get('bandwidth_down', None))
+        bandwidth_up = int(request.POST.get('bandwidth_up', None))
+        capacity_down = int(request.POST.get('capacity_down', None))
+        capacity_up = int(request.POST.get('capacity_up', None))
+
+        order_id = "ORD%s" % datetime.datetime.now().strftime("%Y%m%d%H%M%S")
+        print("order_id", order_id)
+
+        print(product_name)
+        print(user_number)
+        print(latency)
+        print(bandwidth_down)
+        print(bandwidth_up)
+        print(capacity_down)
+        print(capacity_up)
+        order = Order.objects.create(order_id=order_id, product=Product.objects.get(name=product_name),
+                                     user_number=user_number, latency=latency, bandwidth_down=bandwidth_down,
+                                     bandwidth_up=bandwidth_up, capacity_down=capacity_down, capacity_up=capacity_up)
+        order.save()
+
+        owner_name = request.session['user_name']
+        owner = User.objects.get(name=owner_name)
+        orders = Order.objects.all()
+        theader = Order.get_threader()
+        return render(request, 'order_display.html', locals())
+
+
+@require_GET
+def order_display(request):
+    orders = Order.objects.all()
+    theader = Order.get_threader()
+    owner_name = request.session['user_name']
+    owner = User.objects.get(name=owner_name)
+    return render(request, 'order_display.html', locals())

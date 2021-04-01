@@ -292,6 +292,18 @@
                   <p>Invite bids</p>
                 </a>
               </li>
+              <li class="nav-item">
+                <a href="{% url 'mall' %}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Mall</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{% url 'order_display' %}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Orders</p>
+                </a>
+              </li>
               {% endif %}
                 {% if owner.role == "csp" %}
               <li class="nav-item">
@@ -349,14 +361,6 @@
 
     <!-- /.content -->
   </div>
-  <!-- /.content-wrapper -->
-  <footer class="main-footer">
-    <strong>Copyright &copy; 2014-2019 <a href="http://adminlte.io">AdminLTE.io</a>.</strong>
-    All rights reserved.
-    <div class="float-right d-none d-sm-inline-block">
-      <b>Version</b> 3.0.5
-    </div>
-  </footer>
 
   <!-- Control Sidebar -->
   <aside class="control-sidebar control-sidebar-dark">

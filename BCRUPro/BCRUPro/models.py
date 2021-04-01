@@ -80,3 +80,39 @@ class SubmitBids(models.Model):
     def __str__(self):
         return self.bid
 
+
+class Product(models.Model):
+    name = models.TextField(unique=True)
+    image_name = models.TextField(unique=True)
+    create_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.name
+
+    def get_static_image(self):
+        return "adminlte/dist/img/"+self.image_name
+
+    @staticmethod
+    def get_image_basename(name):
+        return name.split("/")[-1]
+
+
+class Order(models.Model):
+    order_id = models.TextField(unique=True)
+    product = models.ForeignKey(Product, primary_key=False, blank=False, on_delete=PROTECT)
+    user_number = models.IntegerField(default=0)
+    latency = models.IntegerField(default=0)
+    bandwidth_down = models.IntegerField(default=0)
+    bandwidth_up = models.IntegerField(default=0)
+    capacity_down = models.IntegerField(default=0)
+    capacity_up = models.IntegerField(default=0)
+    create_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.order_id
+
+    @staticmethod
+    def get_threader():
+        return ["Order", "Product", "Users Number", "Latency", "Bandwidth Down", 
+                "Bandwidth Up", "Capacity Down", "Capacity Up", "Create Time"]
+

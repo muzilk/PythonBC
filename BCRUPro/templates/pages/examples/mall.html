@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+    <p>Mall</p>
+    <table class="table table-bordered" style="width:95%;height:auto;">
+        <tr>
+            {% for product in product1 %}
+            <td width="200px" height="200px">
+                <div>
+                    <img src="{% static product.image_name %}" alt="Product Image" style="width:400px;height:260px;">
+                    <p>Product Name: {{ product.name }}</p>
+                    <div>
+                        <form method="post" action="{% url 'sign_order' %}">
+                            <input type="hidden" name="product_name" value="{{ product.name }}">
+                            <input type="submit" value="Buy" class="btn btn-sm btn-info">
+                        </form>
+                    </div>
+                </div>
+            </td>
+            {% endfor %}
+        </tr>
+        <tr>
+            {% for product in product2 %}
+            <td width="200px" height="200px">
+                <div>
+                    <img src="{% static product.image_name %}" alt="Product Image" style="width:400px;height:260px;">
+                    <p>Product Name: {{ product.name }}</p>
+                    <div>
+                        <form method="post" action="{% url 'sign_order' %}">
+                            <input type="hidden" name="product_name" value="{{ product.name }}">
+                            <input type="submit" value="Buy" class="btn btn-sm btn-info">
+                        </form>
+                    </div>
+                </div>
+            </td>
+            {% endfor %}
+        </tr>
+    </table>
+
+{% endblock %}

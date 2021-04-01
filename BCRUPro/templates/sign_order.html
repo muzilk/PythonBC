@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+    <form action="{% url 'buy' %}" method="post">
+        <div class="row" style="width:95%;height:auto;">
+            <div class="col-12">
+                <div class="card card-primary">
+                    <div class="card-header">
+                        <h3 class="card-title">Choose</h3>
+                        <div class="card-tools">
+                            <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
+                                <i class="fas fa-minus"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group col-md-6 float-left">
+                            <label for="inputName">slicing name</label>
+                            <input name="product_name" type="text" id="inputName" value="{{ product.name }}" class="form-control">
+                        </div>
+                        <div class="form-group col-md-6 float-right">
+                            <img src="{% static product.image_name %}" alt="Product Image" style="width:100%;height:auto;">
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="inputName">users number</label>
+                            <input name="user_number" type="range" min="0" max="100" value="60" class="form-control">
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="inputName">latency(ms)</label>
+                            <input name="latency" type="range" min="0" max="100" value="40" class="form-control">
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="inputName">bandwidth down(Mbps)</label>
+                            <input name="bandwidth_down" type="range" min="0" max="100" value="80" class="form-control">
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="inputName">bandwidth up(Mbps)</label>
+                            <input name="bandwidth_up" type="range" min="0" max="100" value="46" class="form-control">
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="inputName">capacity down(GB)</label>
+                            <input name="capacity_down" type="range" min="0" max="100" value="50" class="form-control">
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="inputName">capacity up(GB)</label>
+                            <input name="capacity_up" type="range" min="0" max="100" value="50" class="form-control">
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6" style="float:left">
+                                <a href="{% url 'mall' %}" class="btn btn-secondary">Cancel</a>
+                                <input type="submit" value="Buy" class="btn btn-success float-right">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+{% endblock %}
