@@ -12,4 +12,7 @@ pushd ${project_path}
     docker-compose build && docker-compose up -d
 popd
 
+# remove image
+# y|docker system prune
+
 
