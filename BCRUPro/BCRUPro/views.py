@@ -212,7 +212,6 @@ def create_invite_bids(request):
         return render(request, 'pages/examples/invite-bids-display.html', locals())
 
 
-
 @require_http_methods(['POST', 'GET'])
 def offer_bids(request):
     if request.method == 'GET':
@@ -325,15 +324,6 @@ def buy(request):
         capacity_up = int(request.POST.get('capacity_up', None))
 
         order_id = "ORD%s" % datetime.datetime.now().strftime("%Y%m%d%H%M%S")
-        print("order_id", order_id)
-
-        print(product_name)
-        print(user_number)
-        print(latency)
-        print(bandwidth_down)
-        print(bandwidth_up)
-        print(capacity_down)
-        print(capacity_up)
         order = Order.objects.create(order_id=order_id, product=Product.objects.get(name=product_name),
                                      user_number=user_number, latency=latency, bandwidth_down=bandwidth_down,
                                      bandwidth_up=bandwidth_up, capacity_down=capacity_down, capacity_up=capacity_up)
@@ -348,6 +338,18 @@ def buy(request):
 
 @require_GET
 def order_display(request):
+    orders = Order.objects.all()
+    theader = Order.get_threader()
+    owner_name = request.session['user_name']
+    owner = User.objects.get(name=owner_name)
+    return render(request, 'order_display.html', locals())
+
+
+@require_POST
+def order_delete(request):
+    order_id = request.POST.get('order_id', None)
+    order = Order.objects.get(order_id=order_id)
+    order.delete()
     orders = Order.objects.all()
     theader = Order.get_threader()
     owner_name = request.session['user_name']

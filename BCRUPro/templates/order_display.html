@@ -30,6 +30,7 @@
                             <strong>{{ th }}</strong>
                         </th>
                       {% endfor %}
+                        <th></th>
                   </tr>
                   </thead>
                   <tbody>
@@ -44,6 +45,12 @@
                         <td>{{ order.capacity_down }}</td>
                         <td>{{ order.capacity_up }}</td>
                         <td>{{ order.create_at }}</td>
+                        <td>
+                            <form method="post" action="{% url 'order_delete' %}">
+                                <input type="hidden" name="order_id" value="{{ order.order_id }}">
+                                <input type="submit" value="Delete" class="btn btn-sm btn-danger">
+                            </form>
+                        </td>
                     </tr>
                   {% endfor %}
                   </tbody>

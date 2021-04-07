@@ -24,27 +24,33 @@
                         </div>
                         <div class="form-group col-md-6">
                             <label for="inputName">users number</label>
-                            <input name="user_number" type="range" min="0" max="100" value="60" class="form-control">
+                            <input id="user_number" name="user_number" type="range" min="0" max="100" value="0" class="form-control" oninput="change('user_number')" onchange="change('user_number')">
+                            <input id="user_number_show" type="number" value="0" class="form-control col-2">
                         </div>
                         <div class="form-group col-md-6">
                             <label for="inputName">latency(ms)</label>
-                            <input name="latency" type="range" min="0" max="100" value="40" class="form-control">
+                            <input id="latency" name="latency" type="range" min="0" max="100" value="0" class="form-control" oninput="change('latency')" onchange="change('latency')">
+                            <input id="latency_show" type="number" value="0" class="form-control col-2">
                         </div>
                         <div class="form-group col-md-6">
                             <label for="inputName">bandwidth down(Mbps)</label>
-                            <input name="bandwidth_down" type="range" min="0" max="100" value="80" class="form-control">
+                            <input id="bandwidth_down" name="bandwidth_down" type="range" min="0" max="1000" value="0" class="form-control" oninput="change('bandwidth_down')" onchange="change('bandwidth_down')">
+                            <input id="bandwidth_down_show" type="number" value="0" class="form-control col-2">
                         </div>
                         <div class="form-group col-md-6">
                             <label for="inputName">bandwidth up(Mbps)</label>
-                            <input name="bandwidth_up" type="range" min="0" max="100" value="46" class="form-control">
+                            <input id="bandwidth_up" name="bandwidth_up" type="range" min="0" max="1000" value="0" class="form-control" oninput="change('bandwidth_up')" onchange="change('bandwidth_up')">
+                            <input id="bandwidth_up_show" type="number" value="0" class="form-control col-2">
                         </div>
                         <div class="form-group col-md-6">
                             <label for="inputName">capacity down(GB)</label>
-                            <input name="capacity_down" type="range" min="0" max="100" value="50" class="form-control">
+                            <input id="capacity_down" name="capacity_down" type="range" min="0" max="200" value="0" class="form-control" oninput="change('capacity_down')" onchange="change('capacity_down')">
+                            <input id="capacity_down_show" type="number" value="0" class="form-control col-2">
                         </div>
                         <div class="form-group col-md-6">
                             <label for="inputName">capacity up(GB)</label>
-                            <input name="capacity_up" type="range" min="0" max="100" value="50" class="form-control">
+                            <input id="capacity_up" name="capacity_up" type="range" min="0" max="200" value="0" class="form-control" oninput="change('capacity_up')" onchange="change('capacity_up')">
+                            <input id="capacity_up_show" type="number" value="0" class="form-control col-2">
                         </div>
                         <div class="row">
                             <div class="col-md-6" style="float:left">
@@ -57,5 +63,11 @@
             </div>
         </div>
     </form>
-
+<script type='text/javascript'>
+    function change(id) {
+        var num = document.getElementById(id);
+        var location = document.getElementById(id+"_show");
+        location.value = num.value;
+    }
+</script>
 {% endblock %}
