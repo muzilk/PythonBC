@@ -1,6 +1,8 @@
 import datetime
 import time
 # Create your views here.
+from functools import wraps
+
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.contrib import messages
@@ -12,9 +14,20 @@ from BCRUPro.utils import send_block
 from login.models import User
 
 
+def session_timeout(request):
+    try:
+        owner_name = request.session['user_name']
+        return owner_name
+    except KeyError:
+        return render(request, 'pages/examples/login.html')
+
+
 def get_nodes(request):
     context = {}
-    owner_name = request.session['user_name']
+    try:
+        owner_name = request.session['user_name']
+    except KeyError:
+        return render(request, 'pages/examples/login.html')
     nodes = Node.objects.filter(owner__name=owner_name)
     # nodes = Node.objects.all()
     colors = ["bg-info", "bg-success", "bg-warning", "bg-danger", "bg-orange"]
@@ -155,6 +168,7 @@ def block_delete(request):
         theader = Block.get_threader()
         return render(request, 'pages/tables/blocks.html', locals())
 
+
 @require_GET
 def node_detail(request):
     return render(request, 'pages/examples/node-detail.html')
@@ -167,7 +181,10 @@ def node_edit(request):
 
 @require_GET
 def invite_bids_display(request):
-    owner_name = request.session['user_name']
+    try:
+        owner_name = request.session['user_name']
+    except KeyError:
+        return render(request, 'pages/examples/login.html')
     owner = User.objects.get(name=owner_name)
     if owner.role == "customer":
         invite_bids = InviteBids.objects.filter(owner=owner)
@@ -180,12 +197,18 @@ def invite_bids_display(request):
 @require_http_methods(['POST', 'GET'])
 def create_invite_bids(request):
     if request.method == 'GET':
-        owner_name = request.session['user_name']
+        try:
+            owner_name = request.session['user_name']
+        except KeyError:
+            return render(request, 'pages/examples/login.html')
         owner = User.objects.get(name=owner_name)
         nodes = Node.objects.filter(owner=owner)
         return render(request, 'pages/examples/invite-bids-create.html', locals())
     else:
-        owner_name = request.session['user_name']
+        try:
+            owner_name = request.session['user_name']
+        except KeyError:
+            return render(request, 'pages/examples/login.html')
         owner = User.objects.get(name=owner_name)
         now = time.strftime('%Y%m%d%H%M%S', time.localtime(time.time()))
         invitation_id = "INBID" + now
@@ -217,11 +240,17 @@ def offer_bids(request):
     if request.method == 'GET':
         invitation_id = request.GET.get('invitation_id', None)
         invite_bid = InviteBids.objects.get(invitation_id=invitation_id)
-        owner_name = request.session['user_name']
+        try:
+            owner_name = request.session['user_name']
+        except KeyError:
+            return render(request, 'pages/examples/login.html')
         owner = User.objects.get(name=owner_name)
         return render(request, 'pages/examples/offer-bids.html', locals())
     else:
-        owner_name = request.session['user_name']
+        try:
+            owner_name = request.session['user_name']
+        except KeyError:
+            return render(request, 'pages/examples/login.html')
         owner = User.objects.get(name=owner_name)
         
         invitation_id = request.POST.get('invitation_id', None)
@@ -293,7 +322,10 @@ def deploy_bids(request):
 @require_http_methods(['GET', "POST"])
 def mall(request):
     if request.method == 'GET':
-        owner_name = request.session['user_name']
+        try:
+            owner_name = request.session['user_name']
+        except KeyError:
+            return render(request, 'pages/examples/login.html')
         owner = User.objects.get(name=owner_name)
         product1 = Product.objects.all()[0:3]
         product2 = Product.objects.all()[3:]
@@ -307,7 +339,10 @@ def sign_order(request):
     if request.method == 'POST':
         product_name = request.POST.get('product_name', None)
         product = Product.objects.get(name=product_name)
-        owner_name = request.session['user_name']
+        try:
+            owner_name = request.session['user_name']
+        except KeyError:
+            return render(request, 'pages/examples/login.html')
         owner = User.objects.get(name=owner_name)
         return render(request, 'sign_order.html', locals())
 
@@ -329,7 +364,10 @@ def buy(request):
                                      bandwidth_up=bandwidth_up, capacity_down=capacity_down, capacity_up=capacity_up)
         order.save()
 
-        owner_name = request.session['user_name']
+        try:
+            owner_name = request.session['user_name']
+        except KeyError:
+            return render(request, 'pages/examples/login.html')
         owner = User.objects.get(name=owner_name)
         orders = Order.objects.all()
         theader = Order.get_threader()
@@ -340,7 +378,10 @@ def buy(request):
 def order_display(request):
     orders = Order.objects.all()
     theader = Order.get_threader()
-    owner_name = request.session['user_name']
+    try:
+        owner_name = request.session['user_name']
+    except KeyError:
+        return render(request, 'pages/examples/login.html')
     owner = User.objects.get(name=owner_name)
     return render(request, 'order_display.html', locals())
 
@@ -352,6 +393,9 @@ def order_delete(request):
     order.delete()
     orders = Order.objects.all()
     theader = Order.get_threader()
-    owner_name = request.session['user_name']
+    try:
+        owner_name = request.session['user_name']
+    except KeyError:
+        return render(request, 'pages/examples/login.html')
     owner = User.objects.get(name=owner_name)
     return render(request, 'order_display.html', locals())
