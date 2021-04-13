@@ -28,6 +28,17 @@
                             <input id="user_number_show" type="number" value="0" class="form-control col-2">
                         </div>
                         <div class="form-group col-md-6">
+                            <label for="inputName">reliability</label><br>
+                            <input type="radio" name="reliability" value="99.99%" class="radio col-2">99.99%
+                            <input type="radio" name="reliability" value="99.999%" class="radio col-2">99.999%
+                            <input type="radio" name="reliability" value="99.9999%" class="radio col-2">99.9999%
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="inputName">share level</label><br>
+                            <input type="radio" name="share" value="shared" class="radio col-2">shared
+                            <input type="radio" name="share" value="non-shared" class="radio col-2">non-shared
+                        </div>
+                        <div class="form-group col-md-6">
                             <label for="inputName">latency(ms)</label>
                             <input id="latency" name="latency" type="range" min="0" max="100" value="0" class="form-control" oninput="change('latency')" onchange="change('latency')">
                             <input id="latency_show" type="number" value="0" class="form-control col-2">
