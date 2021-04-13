@@ -24,7 +24,7 @@
                         </div>
                         <div class="form-group col-md-6">
                             <label for="inputName">users number</label>
-                            <input id="user_number" name="user_number" type="range" min="0" max="100" value="0" class="form-control" oninput="change('user_number')" onchange="change('user_number')">
+                            <input id="user_number" name="user_number" type="range" min="0" max="100" value="0" class="form-control" oninput="change('user_number');price()" onchange="change('user_number');price()">
                             <input id="user_number_show" type="number" value="0" class="form-control col-2">
                         </div>
                         <div class="form-group col-md-6">
@@ -40,27 +40,27 @@
                         </div>
                         <div class="form-group col-md-6">
                             <label for="inputName">latency(ms)</label>
-                            <input id="latency" name="latency" type="range" min="0" max="100" value="0" class="form-control" oninput="change('latency')" onchange="change('latency')">
-                            <input id="latency_show" type="number" value="0" class="form-control col-2">
+                            <input id="latency" name="latency" type="range" min="0" max="100" value="50" class="form-control" oninput="change('latency');price()" onchange="change('latency');price()">
+                            <input id="latency_show" type="number" value="50" class="form-control col-2">
                         </div>
                         <div class="form-group col-md-6">
                             <label for="inputName">bandwidth down(Mbps)</label>
-                            <input id="bandwidth_down" name="bandwidth_down" type="range" min="0" max="1000" value="0" class="form-control" oninput="change('bandwidth_down')" onchange="change('bandwidth_down')">
+                            <input id="bandwidth_down" name="bandwidth_down" type="range" min="0" max="1000" value="0" class="form-control" oninput="change('bandwidth_down');price()" onchange="change('bandwidth_down');price()">
                             <input id="bandwidth_down_show" type="number" value="0" class="form-control col-2">
                         </div>
                         <div class="form-group col-md-6">
                             <label for="inputName">bandwidth up(Mbps)</label>
-                            <input id="bandwidth_up" name="bandwidth_up" type="range" min="0" max="1000" value="0" class="form-control" oninput="change('bandwidth_up')" onchange="change('bandwidth_up')">
+                            <input id="bandwidth_up" name="bandwidth_up" type="range" min="0" max="1000" value="0" class="form-control" oninput="change('bandwidth_up');price()" onchange="change('bandwidth_up');price()">
                             <input id="bandwidth_up_show" type="number" value="0" class="form-control col-2">
                         </div>
                         <div class="form-group col-md-6">
                             <label for="inputName">capacity down(GB)</label>
-                            <input id="capacity_down" name="capacity_down" type="range" min="0" max="200" value="0" class="form-control" oninput="change('capacity_down')" onchange="change('capacity_down')">
+                            <input id="capacity_down" name="capacity_down" type="range" min="0" max="200" value="0" class="form-control" oninput="change('capacity_down');price()" onchange="change('capacity_down');price()">
                             <input id="capacity_down_show" type="number" value="0" class="form-control col-2">
                         </div>
                         <div class="form-group col-md-6">
                             <label for="inputName">capacity up(GB)</label>
-                            <input id="capacity_up" name="capacity_up" type="range" min="0" max="200" value="0" class="form-control" oninput="change('capacity_up')" onchange="change('capacity_up')">
+                            <input id="capacity_up" name="capacity_up" type="range" min="0" max="200" value="0" class="form-control" oninput="change('capacity_up');price()" onchange="change('capacity_up');price()">
                             <input id="capacity_up_show" type="number" value="0" class="form-control col-2">
                         </div>
                         <div class="form-group col-md-6">
@@ -70,6 +70,9 @@
                         <div class="form-group col-md-6">
                             <label for="inputName">End time</label>
                             <input id="end_time" name="start_time" type="datetime-local" class="form-control">
+                        </div>
+                        <div class="form-group col-md-6">
+                            <p align="center" style="color:white;background:#00A000;font-size:40px;font-family: 'SimHei'"><font>Price: <span id="price">0</span></font></p>
                         </div>
                         <div class="row">
                             <div class="col-md-6" style="float:left">
@@ -87,6 +90,23 @@
         var num = document.getElementById(id);
         var location = document.getElementById(id+"_show");
         location.value = num.value;
+    }
+
+    function price() {
+        var price_location = document.getElementById("price");
+        var latency = document.getElementById("latency_show");
+        var bandwidth_down = document.getElementById("bandwidth_down_show");
+        var bandwidth_up = document.getElementById("bandwidth_up_show");
+        var capacity_down = document.getElementById("capacity_down_show");
+        var capacity_up = document.getElementById("capacity_up_show");
+        var price =  2000 - parseInt(parseInt(latency.value)*parseInt(latency.value)*0.25)
+            + parseInt(bandwidth_down.value)*5 + parseInt(bandwidth_up.value)*5
+            + parseInt(capacity_down.value)*2 + parseInt(capacity_up.value)*2;
+        if (price >= 0) {
+            price_location.innerHTML = price;
+        }else {
+            price_location.innerHTML = 0;
+        }
     }
 </script>
 {% endblock %}
