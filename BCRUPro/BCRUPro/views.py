@@ -351,17 +351,22 @@ def sign_order(request):
 def buy(request):
     if request.method == 'POST':
         product_name = request.POST.get('product_name', None)
-        user_number = int(request.POST.get('user_number', None))
-        latency = int(request.POST.get('latency', None))
-        bandwidth_down = int(request.POST.get('bandwidth_down', None))
-        bandwidth_up = int(request.POST.get('bandwidth_up', None))
-        capacity_down = int(request.POST.get('capacity_down', None))
-        capacity_up = int(request.POST.get('capacity_up', None))
+        user_number = int(request.POST.get('user_number', 0))
+        latency = int(request.POST.get('latency', 0))
+        bandwidth_down = int(request.POST.get('bandwidth_down', 0))
+        bandwidth_up = int(request.POST.get('bandwidth_up', 0))
+        capacity_down = int(request.POST.get('capacity_down', 0))
+        capacity_up = int(request.POST.get('capacity_up', 0))
+        start_time = request.POST.get('start_time', None)
+        end_time = request.POST.get('end_time', None)
+        start_time = datetime.datetime.strptime(start_time, "%Y-%m-%dT%H:%M")
+        end_time = datetime.datetime.strptime(end_time, "%Y-%m-%dT%H:%M")
 
         order_id = "ORD%s" % datetime.datetime.now().strftime("%Y%m%d%H%M%S")
         order = Order.objects.create(order_id=order_id, product=Product.objects.get(name=product_name),
                                      user_number=user_number, latency=latency, bandwidth_down=bandwidth_down,
-                                     bandwidth_up=bandwidth_up, capacity_down=capacity_down, capacity_up=capacity_up)
+                                     bandwidth_up=bandwidth_up, capacity_down=capacity_down, capacity_up=capacity_up,
+                                     start_time=start_time, end_time=end_time)
         order.save()
 
         try:

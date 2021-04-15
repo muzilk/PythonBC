@@ -24,8 +24,8 @@
                         </div>
                         <div class="form-group col-md-6">
                             <label for="inputName">users number</label>
-                            <input id="user_number" name="user_number" type="range" min="0" max="100" value="0" class="form-control" oninput="change('user_number');price()" onchange="change('user_number');price()">
-                            <input id="user_number_show" type="number" value="0" class="form-control col-2">
+                            <input id="user_number" name="user_number" type="range" min="0" max="100" value="10" class="form-control" oninput="change('user_number');price()" onchange="change('user_number');price()">
+                            <input id="user_number_show" type="number" value="10" class="form-control col-2">
                         </div>
                         <div class="form-group col-md-6">
                             <label for="inputName">reliability</label><br>
@@ -44,24 +44,14 @@
                             <input id="latency_show" type="number" value="50" class="form-control col-2">
                         </div>
                         <div class="form-group col-md-6">
-                            <label for="inputName">bandwidth down(Mbps)</label>
-                            <input id="bandwidth_down" name="bandwidth_down" type="range" min="0" max="1000" value="0" class="form-control" oninput="change('bandwidth_down');price()" onchange="change('bandwidth_down');price()">
-                            <input id="bandwidth_down_show" type="number" value="0" class="form-control col-2">
+                            <label for="inputName">bandwidth (Mbps)</label>
+                            <input id="bandwidth_up" name="bandwidth_up" type="range" min="0" max="1000" value="10" class="form-control" oninput="change('bandwidth_up');price()" onchange="change('bandwidth_up');price()">
+                            <input id="bandwidth_up_show" type="number" value="10" class="form-control col-2">
                         </div>
                         <div class="form-group col-md-6">
-                            <label for="inputName">bandwidth up(Mbps)</label>
-                            <input id="bandwidth_up" name="bandwidth_up" type="range" min="0" max="1000" value="0" class="form-control" oninput="change('bandwidth_up');price()" onchange="change('bandwidth_up');price()">
-                            <input id="bandwidth_up_show" type="number" value="0" class="form-control col-2">
-                        </div>
-                        <div class="form-group col-md-6">
-                            <label for="inputName">capacity down(GB)</label>
-                            <input id="capacity_down" name="capacity_down" type="range" min="0" max="200" value="0" class="form-control" oninput="change('capacity_down');price()" onchange="change('capacity_down');price()">
-                            <input id="capacity_down_show" type="number" value="0" class="form-control col-2">
-                        </div>
-                        <div class="form-group col-md-6">
-                            <label for="inputName">capacity up(GB)</label>
-                            <input id="capacity_up" name="capacity_up" type="range" min="0" max="200" value="0" class="form-control" oninput="change('capacity_up');price()" onchange="change('capacity_up');price()">
-                            <input id="capacity_up_show" type="number" value="0" class="form-control col-2">
+                            <label for="inputName">capacity (GB)</label>
+                            <input id="capacity_up" name="capacity_up" type="range" min="0" max="200" value="10" class="form-control" oninput="change('capacity_up');price()" onchange="change('capacity_up');price()">
+                            <input id="capacity_up_show" type="number" value="10" class="form-control col-2">
                         </div>
                         <div class="form-group col-md-6">
                             <label for="inputName">Start time</label>
@@ -69,10 +59,25 @@
                         </div>
                         <div class="form-group col-md-6">
                             <label for="inputName">End time</label>
-                            <input id="end_time" name="start_time" type="datetime-local" class="form-control">
+                            <input id="end_time" name="end_time" type="datetime-local" class="form-control">
                         </div>
                         <div class="form-group col-md-6">
-                            <p align="center" style="color:white;background:#00A000;font-size:40px;font-family: 'SimHei'"><font>Price: <span id="price">0</span></font></p>
+{#                            <p id="rounting_agent_count" type="number">1</p>#}
+{#                            <p id="rounting_agent_vcpu" type="number">0</p>#}
+{#                            <p id="rounting_agent_ram" type="number">8</p>#}
+{#                            <p id="data_plane_link_count" type="number">0</p>#}
+{#                            <p id="data_plane_link_vcpu" type="number">1</p>#}
+{#                            <p id="data_plane_link_ram" type="number">0</p>#}
+{#                            <p id="vswitch_count" type="number">1</p>#}
+{#                            <p id="vswitch_vcpu" type="number">0</p>#}
+{#                            <p id="vswitch_ram" type="number">0</p>#}
+{#                            <p id="key_value_database_count" type="number">1</p>#}
+{#                            <p id="key_value_database_vcpu" type="number">1</p>#}
+{#                            <p id="key_value_database_ram" type="number">0</p>#}
+{#                            <p id="common_service_adp_count" type="number">1</p>#}
+{#                            <p id="common_service_adp_vcpu" type="number">1</p>#}
+{#                            <p id="common_service_adp_ram" type="number">3</p>#}
+                            <p align="center" style="color:white;background:#00A000;font-size:40px;font-family: 'SimHei'"><font>Price: <span id="price">0</span> $ per hour</font></p>
                         </div>
                         <div class="row">
                             <div class="col-md-6" style="float:left">
@@ -94,19 +99,48 @@
 
     function price() {
         var price_location = document.getElementById("price");
+        var user_number = document.getElementById("user_number_show");
         var latency = document.getElementById("latency_show");
-        var bandwidth_down = document.getElementById("bandwidth_down_show");
         var bandwidth_up = document.getElementById("bandwidth_up_show");
-        var capacity_down = document.getElementById("capacity_down_show");
         var capacity_up = document.getElementById("capacity_up_show");
-        var price =  2000 - parseInt(parseInt(latency.value)*parseInt(latency.value)*0.25)
-            + parseInt(bandwidth_down.value)*5 + parseInt(bandwidth_up.value)*5
-            + parseInt(capacity_down.value)*2 + parseInt(capacity_up.value)*2;
-        if (price >= 0) {
-            price_location.innerHTML = price;
-        }else {
-            price_location.innerHTML = 0;
-        }
+
+        var vswirch_count = 1;
+        var vswirch_vcpu = 11-parseInt(latency.value/10);
+        var vswirch_ram = parseInt(bandwidth_up.value/10);
+
+        var rounting_agent_count = 1;
+        var rounting_agent_vcpu = parseInt(vswirch_vcpu/10)+1;
+        var rounting_agent_ram = 8;
+
+        var data_plane_link_count = user_number.value;
+        var data_plane_link_vcpu = 1;
+        var data_plane_link_ram = parseInt(capacity_up.value/20)+1;
+
+        var key_value_database_rount = 1;
+        var key_value_database_vcpu = 1;
+        var key_value_database_ram = user_number.value;
+
+        var common_service_adp_count = 1;
+        var common_service_adp_vcpu = 1;
+        var common_service_adp_ram = 3;
+
+        var vcpu_per_network =
+            rounting_agent_count*rounting_agent_vcpu
+            +data_plane_link_count*data_plane_link_vcpu
+            +vswirch_count*vswirch_vcpu
+            +key_value_database_rount*key_value_database_vcpu
+            +common_service_adp_count*common_service_adp_vcpu;
+
+        var ram_per_network =
+            rounting_agent_count*rounting_agent_ram
+            +data_plane_link_count*data_plane_link_ram
+            +vswirch_count*vswirch_ram
+            +key_value_database_rount*key_value_database_ram
+            +common_service_adp_count*common_service_adp_ram;
+
+        var price_number = parseFloat(vcpu_per_network*0.05+ram_per_network*0.015).toFixed(3);
+        price_location.innerHTML = price_number;
+
     }
 </script>
 {% endblock %}

@@ -106,6 +106,8 @@ class Order(models.Model):
     bandwidth_up = models.IntegerField(default=0)
     capacity_down = models.IntegerField(default=0)
     capacity_up = models.IntegerField(default=0)
+    start_time = models.DateTimeField(null=True)
+    end_time = models.DateTimeField(null=True)
     create_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
