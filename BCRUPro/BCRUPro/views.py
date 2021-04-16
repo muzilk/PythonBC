@@ -392,6 +392,61 @@ def order_display(request):
 
 
 @require_POST
+def order_detail(request):
+    order_id = request.POST.get('order_id', None)
+    order = Order.objects.get(order_id=order_id)
+
+    hours = (order.end_time-order.start_time).seconds / 60
+
+    vswirch_count = 1
+    vswirch_vcpu = 11 - int(order.latency / 10)
+    vswirch_ram = int(order.bandwidth_up / 10)
+
+    rounting_agent_count = 1
+    rounting_agent_vcpu = int(vswirch_vcpu / 10) + 1
+    rounting_agent_ram = 8
+
+    data_plane_link_count = order.user_number
+    data_plane_link_vcpu = 1
+    data_plane_link_ram = int(order.capacity_up / 20) + 1
+
+    key_value_database_rount = 1
+    key_value_database_vcpu = 1
+    key_value_database_ram = order.user_number
+
+    common_service_adp_count = 1
+    common_service_adp_vcpu = 1
+    common_service_adp_ram = 3
+
+    vcpu_per_network = \
+        rounting_agent_count * rounting_agent_vcpu + \
+        data_plane_link_count * data_plane_link_vcpu + \
+        vswirch_count * vswirch_vcpu + \
+        key_value_database_rount * key_value_database_vcpu + \
+        common_service_adp_count * common_service_adp_vcpu
+
+    ram_per_network = \
+        rounting_agent_count * rounting_agent_ram + \
+        data_plane_link_count * data_plane_link_ram + \
+        vswirch_count * vswirch_ram + \
+        key_value_database_rount * key_value_database_ram + \
+        common_service_adp_count * common_service_adp_ram
+
+    price_per_hour = vcpu_per_network*0.05 + ram_per_network*0.015
+    price = price_per_hour*hours
+
+    price_per_hour = "%.3f" % price_per_hour
+    price = "%.3f" % price
+
+    try:
+        owner_name = request.session['user_name']
+    except KeyError:
+        return render(request, 'pages/examples/login.html')
+    owner = User.objects.get(name=owner_name)
+    return render(request, 'order_details.html', locals())
+
+
+@require_POST
 def order_delete(request):
     order_id = request.POST.get('order_id', None)
     order = Order.objects.get(order_id=order_id)

@@ -115,6 +115,6 @@ class Order(models.Model):
 
     @staticmethod
     def get_threader():
-        return ["Order", "Product", "Users Number", "Latency", "Bandwidth Down", 
-                "Bandwidth Up", "Capacity Down", "Capacity Up", "Create Time"]
+        return ["Order", "Product", "Users Number", "Latency",
+                "Bandwidth Up", "Capacity Up", "Create Time"]
 
