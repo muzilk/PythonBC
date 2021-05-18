@@ -396,7 +396,8 @@ def order_detail(request):
     order_id = request.POST.get('order_id', None)
     order = Order.objects.get(order_id=order_id)
 
-    hours = (order.end_time-order.start_time).seconds / 60
+    delta = order.end_time-order.start_time
+    hours = delta.days * 24 + delta.seconds / 3600
 
     vswirch_count = 1
     vswirch_vcpu = 11 - int(order.latency / 10)

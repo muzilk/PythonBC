@@ -90,7 +90,7 @@ class Product(models.Model):
         return self.name
 
     def get_static_image(self):
-        return "adminlte/dist/img/"+self.image_name
+        return "adminlte/dist/img/"+str(self.image_name)
 
     @staticmethod
     def get_image_basename(name):
@@ -117,4 +117,3 @@ class Order(models.Model):
     def get_threader():
         return ["Order", "Product", "Users Number", "Latency",
                 "Bandwidth Up", "Capacity Up", "Create Time"]
-
