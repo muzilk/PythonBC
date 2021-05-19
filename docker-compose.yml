@@ -23,7 +23,10 @@ services:
     - "8000:8000"
     volumes:
     - /home/BCRUPro
-    command: python3 /home/BCRUPro/manage.py runserver 0.0.0.0:8000
+    command:
+        - python3 /home/BCRUPro/manage.py makemigrations
+        - python3 /home/BCRUPro/manage.py migrate
+        - python3 /home/BCRUPro/manage.py runserver 0.0.0.0:8000
     
 #    # 在we和db间创建一个网络，使得容器能够通过名字反问另外一个容器
 #    links:
