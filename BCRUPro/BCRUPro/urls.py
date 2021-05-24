@@ -18,18 +18,25 @@ from __future__ import unicode_literals
 from django.conf.urls import url
 from django.contrib import admin
 from django.urls import path, re_path, include
-
-from login.views import login
 from BCRUPro.views import *
+from rest_framework import routers
+from login.views import login
+from rest.views import *
 
 app_name = 'BCRUPro'
+
+router = routers.DefaultRouter()
+router.register(r'users', UserViewSet)
+router.register(r'groups', GroupViewSet)
 
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^$', login),
     path('login/', include('login.urls', namespace="login")),
-
+    path('', include(router.urls)),
+    path('api/', include('rest.urls', namespace="rest")),
+    path(r'api-auth/', include('rest_framework.urls', namespace='rest_framework')),
 
     re_path(r'^index', index, name='index'),
     re_path(r'^index2', index2, name='index2'),
