@@ -3,4 +3,4 @@ Django==3.0
 pytz==2020.1
 sqlparse==0.3.1
 requests==2.22.0
-djangoframework=3.12.4
+djangorestframework~=3.12.4
