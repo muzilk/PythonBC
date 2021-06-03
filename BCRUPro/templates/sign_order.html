@@ -24,8 +24,13 @@
                         </div>
                         <div class="form-group col-md-6">
                             <label for="inputName">users number</label>
-                            <input id="user_number" name="user_number" type="range" min="0" max="100" value="10" class="form-control" oninput="change('user_number');price()" onchange="change('user_number');price()">
-                            <input id="user_number_show" type="number" value="10" class="form-control col-2">
+                            {% if product_name == "game" %}
+                                <input id="user_number" name="user_number" type="range" min="0" max="100" value="90" class="form-control" oninput="change('user_number');price()" onchange="change('user_number');price()">
+                                <input id="user_number_show" type="number" value="90" class="form-control col-2">
+                            {% else %}
+                                <input id="user_number" name="user_number" type="range" min="0" max="100" value="10" class="form-control" oninput="change('user_number');price()" onchange="change('user_number');price()">
+                                <input id="user_number_show" type="number" value="10" class="form-control col-2">
+                            {% endif %}
                         </div>
                         <div class="form-group col-md-6">
                             <label for="inputName">reliability</label><br>
@@ -40,8 +45,13 @@
                         </div>
                         <div class="form-group col-md-6">
                             <label for="inputName">latency(ms)</label>
-                            <input id="latency" name="latency" type="range" min="0" max="100" value="50" class="form-control" oninput="change('latency');price()" onchange="change('latency');price()">
-                            <input id="latency_show" type="number" value="50" class="form-control col-2">
+                            {% if product_name == "game" %}
+                                <input id="latency" name="latency" type="range" min="0" max="100" value="5" class="form-control" oninput="change('latency');price()" onchange="change('latency');price()">
+                                <input id="latency_show" type="number" value="5" class="form-control col-2">
+                            {% else %}
+                                <input id="latency" name="latency" type="range" min="0" max="100" value="46" class="form-control" oninput="change('latency');price()" onchange="change('latency');price()">
+                                <input id="latency_show" type="number" value="46" class="form-control col-2">
+                            {% endif %}
                         </div>
                         <div class="form-group col-md-6">
                             <label for="inputName">bandwidth (Mbps)</label>
@@ -50,8 +60,13 @@
                         </div>
                         <div class="form-group col-md-6">
                             <label for="inputName">capacity (GB)</label>
-                            <input id="capacity_up" name="capacity_up" type="range" min="0" max="200" value="10" class="form-control" oninput="change('capacity_up');price()" onchange="change('capacity_up');price()">
-                            <input id="capacity_up_show" type="number" value="10" class="form-control col-2">
+                            {% if product_name == "game" %}
+                                <input id="capacity_up" name="capacity_up" type="range" min="0" max="200" value="180" class="form-control" oninput="change('capacity_up');price()" onchange="change('capacity_up');price()">
+                                <input id="capacity_up_show" type="number" value="180" class="form-control col-2">
+                            {% else %}
+                                <input id="capacity_up" name="capacity_up" type="range" min="0" max="200" value="20" class="form-control" oninput="change('capacity_up');price()" onchange="change('capacity_up');price()">
+                                <input id="capacity_up_show" type="number" value="20" class="form-control col-2">
+                            {% endif %}
                         </div>
                         <div class="form-group col-md-6">
                             <label for="inputName">Start time</label>
