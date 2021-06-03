@@ -7,6 +7,7 @@ from django.shortcuts import render
 # Create your views here.
 from django.views.decorators.http import require_http_methods, require_GET
 
+from BCRUPro.models import Product
 from BCRUPro.views import get_nodes, get_revenue_data
 from login.models import User
 
@@ -44,7 +45,10 @@ def login(request):
                 context.update(get_revenue_data(request))
                 owner = User.objects.get(name=user.name)
                 context.update({"owner": owner})
-                return render(request, 'index.html', context=context)
+
+                product1 = Product.objects.all()[0:3]
+                product2 = Product.objects.all()[3:]
+                return render(request, 'pages/examples/mall.html', locals())
             else:
                 return render(request, 'pages/examples/login.html', {"message": "Password is error"})
         else:
