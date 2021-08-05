@@ -84,6 +84,7 @@ class SubmitBids(models.Model):
 class Product(models.Model):
     name = models.TextField(unique=True)
     image_name = models.TextField(unique=True)
+    overview = models.TextField(default="overview")
     create_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):

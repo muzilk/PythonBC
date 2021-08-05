@@ -7,7 +7,7 @@
             <div class="col-12">
                 <div class="card card-primary">
                     <div class="card-header">
-                        <h3 class="card-title">Choose</h3>
+                        <h3 class="card-title">Overview</h3>
                         <div class="card-tools">
                             <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
                                 <i class="fas fa-minus"></i>
@@ -16,13 +16,35 @@
                     </div>
                     <div class="card-body">
                         <div class="form-group col-md-6 float-left">
-                            <label for="inputName">slicing name</label>
-                            <input name="product_name" type="text" id="inputName" value="{{ product.name }}" class="form-control">
+                            <label for="inputName">{{ product.name }}</label>
                         </div>
                         <div class="form-group col-md-6 float-right">
                             <img src="{% static product.image_name %}" alt="Product Image" style="width:100%;height:auto;">
                         </div>
-                        <div class="form-group col-md-6">
+                        <div class="form-group col-md-6 float-left">
+                            <p>{{ product.overview }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row" style="width:95%;height:auto;">
+            <div class="col-12">
+                <div class="card card-primary">
+                    <div class="card-header">
+                        <h3 class="card-title">Settings</h3>
+                        <div class="card-tools">
+                            <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
+                                <i class="fas fa-minus"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label for="inputName">slicing name</label>
+                            <input name="product_name" type="text" id="inputName" value="{{ product.name }}" class="form-control">
+                        </div>
+                        <div class="form-group">
                             <label for="inputName">users number</label>
                             {% if product_name == "game" %}
                                 <input id="user_number" name="user_number" type="range" min="0" max="100" value="90" class="form-control" oninput="change('user_number');price()" onchange="change('user_number');price()">
@@ -32,18 +54,18 @@
                                 <input id="user_number_show" type="number" value="10" class="form-control col-2">
                             {% endif %}
                         </div>
-                        <div class="form-group col-md-6">
+                        <div class="form-group">
                             <label for="inputName">reliability</label><br>
                             <input type="radio" name="reliability" value="99.99%" class="radio col-2">99.99%
                             <input type="radio" name="reliability" value="99.999%" class="radio col-2">99.999%
                             <input type="radio" name="reliability" value="99.9999%" class="radio col-2">99.9999%
                         </div>
-                        <div class="form-group col-md-6">
+                        <div class="form-group">
                             <label for="inputName">share level</label><br>
                             <input type="radio" name="share" value="shared" class="radio col-2">shared
                             <input type="radio" name="share" value="non-shared" class="radio col-2">non-shared
                         </div>
-                        <div class="form-group col-md-6">
+                        <div class="form-group">
                             <label for="inputName">latency(ms)</label>
                             {% if product_name == "game" %}
                                 <input id="latency" name="latency" type="range" min="0" max="100" value="5" class="form-control" oninput="change('latency');price()" onchange="change('latency');price()">
@@ -53,12 +75,12 @@
                                 <input id="latency_show" type="number" value="46" class="form-control col-2">
                             {% endif %}
                         </div>
-                        <div class="form-group col-md-6">
+                        <div class="form-group">
                             <label for="inputName">bandwidth (Mbps)</label>
                             <input id="bandwidth_up" name="bandwidth_up" type="range" min="0" max="1000" value="10" class="form-control" oninput="change('bandwidth_up');price()" onchange="change('bandwidth_up');price()">
                             <input id="bandwidth_up_show" type="number" value="10" class="form-control col-2">
                         </div>
-                        <div class="form-group col-md-6">
+                        <div class="form-group">
                             <label for="inputName">capacity (GB)</label>
                             {% if product_name == "game" %}
                                 <input id="capacity_up" name="capacity_up" type="range" min="0" max="200" value="180" class="form-control" oninput="change('capacity_up');price()" onchange="change('capacity_up');price()">
@@ -68,34 +90,19 @@
                                 <input id="capacity_up_show" type="number" value="20" class="form-control col-2">
                             {% endif %}
                         </div>
-                        <div class="form-group col-md-6">
+                        <div class="form-group">
                             <label for="inputName">Start time</label>
                             <input id="start_time" name="start_time" type="datetime-local" class="form-control">
                         </div>
-                        <div class="form-group col-md-6">
+                        <div class="form-group">
                             <label for="inputName">End time</label>
                             <input id="end_time" name="end_time" type="datetime-local" class="form-control">
                         </div>
-                        <div class="form-group col-md-6">
-{#                            <p id="rounting_agent_count" type="number">1</p>#}
-{#                            <p id="rounting_agent_vcpu" type="number">0</p>#}
-{#                            <p id="rounting_agent_ram" type="number">8</p>#}
-{#                            <p id="data_plane_link_count" type="number">0</p>#}
-{#                            <p id="data_plane_link_vcpu" type="number">1</p>#}
-{#                            <p id="data_plane_link_ram" type="number">0</p>#}
-{#                            <p id="vswitch_count" type="number">1</p>#}
-{#                            <p id="vswitch_vcpu" type="number">0</p>#}
-{#                            <p id="vswitch_ram" type="number">0</p>#}
-{#                            <p id="key_value_database_count" type="number">1</p>#}
-{#                            <p id="key_value_database_vcpu" type="number">1</p>#}
-{#                            <p id="key_value_database_ram" type="number">0</p>#}
-{#                            <p id="common_service_adp_count" type="number">1</p>#}
-{#                            <p id="common_service_adp_vcpu" type="number">1</p>#}
-{#                            <p id="common_service_adp_ram" type="number">3</p>#}
+                        <div class="form-group">
                             <p align="center" style="color:white;background:#00A000;font-size:40px;font-family: 'SimHei'"><font>Price: <span id="price">0</span> $ per hour</font></p>
                         </div>
                         <div class="row">
-                            <div class="col-md-6" style="float:left">
+                            <div class="col-md-12" style="float:right">
                                 <a href="{% url 'mall' %}" class="btn btn-secondary">Cancel</a>
                                 <input type="submit" value="Buy" class="btn btn-success float-right">
                             </div>
