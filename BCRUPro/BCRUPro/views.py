@@ -1,4 +1,5 @@
 import datetime
+import functools
 import time
 # Create your views here.
 from functools import wraps
@@ -14,12 +15,15 @@ from BCRUPro.utils import send_block
 from login.models import User
 
 
-def session_timeout(request):
-    try:
-        owner_name = request.session['user_name']
-        return owner_name
-    except KeyError:
-        return render(request, 'pages/examples/login.html')
+def session_timeout(func):
+    @functools.wraps(func)
+    def wrapper(request, *args, **kwargs):
+        try:
+            owner_name = request.session['user_name']
+        except KeyError:
+            return render(request, 'pages/examples/login.html')
+        return func(request, *args, **kwargs)
+    return wrapper
 
 
 def get_nodes(request):
