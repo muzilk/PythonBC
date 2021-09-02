@@ -336,13 +336,28 @@ def mall(request):
         owner_name = request.session['user_name']
         owner = User.objects.get(name=owner_name)
         return render(request, 'pages/examples/mall.html', locals())
-    
+
+
+@require_http_methods(['GET'])
+def vendor_display(request):
+    if request.method == 'GET':
+        try:
+            owner_name = request.session['user_name']
+        except KeyError:
+            return render(request, 'pages/examples/login.html')
+        owner = User.objects.get(name=owner_name)
+        product_name = request.GET.get('product_name', None)
+        product = Product.objects.get(name=product_name)
+        vendors = Vendor.objects.filter(category__name=product_name)
+        theader = Vendor.get_threader()
+        return render(request, 'pages/examples/vendor_display.html', locals())
+
 
 @require_http_methods(['POST'])
 def sign_order(request):
     if request.method == 'POST':
-        product_name = request.POST.get('product_name', None)
-        product = Product.objects.get(name=product_name)
+        vendor_name = request.POST.get('vendor_name', None)
+        vendor = Vendor.objects.get(name=vendor_name)
         try:
             owner_name = request.session['user_name']
         except KeyError:
@@ -354,7 +369,7 @@ def sign_order(request):
 @require_http_methods(['POST'])
 def buy(request):
     if request.method == 'POST':
-        product_name = request.POST.get('product_name', None)
+        vendor_name = request.POST.get('vendor_name', None)
         user_number = int(request.POST.get('user_number', 0))
         latency = int(request.POST.get('latency', 0))
         bandwidth_down = int(request.POST.get('bandwidth_down', 0))
@@ -367,7 +382,7 @@ def buy(request):
         end_time = datetime.datetime.strptime(end_time, "%Y-%m-%dT%H:%M")
 
         order_id = "ORD%s" % datetime.datetime.now().strftime("%Y%m%d%H%M%S")
-        order = Order.objects.create(order_id=order_id, product=Product.objects.get(name=product_name),
+        order = Order.objects.create(order_id=order_id, vendor=Vendor.objects.get(name=vendor_name),
                                      user_number=user_number, latency=latency, bandwidth_down=bandwidth_down,
                                      bandwidth_up=bandwidth_up, capacity_down=capacity_down, capacity_up=capacity_up,
                                      start_time=start_time, end_time=end_time)

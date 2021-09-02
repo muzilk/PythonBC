@@ -11,7 +11,7 @@
                     <img src="{% static product.image_name %}" alt="Product Image" style="width:400px;height:260px;">
                     <p>Product Name: {{ product.name }}</p>
                     <div>
-                        <form method="post" action="{% url 'sign_order' %}">
+                        <form method="get" action="{% url 'vendor_display' %}">
                             <input type="hidden" name="product_name" value="{{ product.name }}">
                             <input type="submit" value="Buy" class="btn btn-sm btn-info">
                         </form>
@@ -27,7 +27,7 @@
                     <img src="{% static product.image_name %}" alt="Product Image" style="width:400px;height:260px;">
                     <p>Product Name: {{ product.name }}</p>
                     <div>
-                        <form method="post" action="{% url 'sign_order' %}">
+                        <form method="get" action="{% url 'vendor_display' %}">
                             <input type="hidden" name="product_name" value="{{ product.name }}">
                             <input type="submit" value="Buy" class="btn btn-sm btn-info">
                         </form>

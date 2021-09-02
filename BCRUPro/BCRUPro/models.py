@@ -98,9 +98,27 @@ class Product(models.Model):
         return name.split("/")[-1]
 
 
+class Vendor(models.Model):
+    name = models.TextField(unique=True)
+    category = models.ForeignKey(Product, primary_key=False, blank=False, on_delete=PROTECT, default=1)
+    logo = models.TextField(unique=True)
+    overview = models.TextField(default=None)
+    create_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.name
+
+    def get_static_logo(self):
+        return "adminlte/dist/img/"+str(self.logo)
+
+    @staticmethod
+    def get_threader():
+        return ["Name", "Overview"]
+
+
 class Order(models.Model):
     order_id = models.TextField(unique=True)
-    product = models.ForeignKey(Product, primary_key=False, blank=False, on_delete=PROTECT)
+    vendor = models.ForeignKey(Vendor, primary_key=False, blank=False, on_delete=PROTECT)
     user_number = models.IntegerField(default=0)
     latency = models.IntegerField(default=0)
     bandwidth_down = models.IntegerField(default=0)
