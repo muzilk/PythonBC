@@ -65,4 +65,7 @@ urlpatterns = [
     re_path(r'^buy', buy, name='buy'),
     re_path(r'^order_display', order_display, name='order_display'),
     re_path(r'^order_detail', order_detail, name='order_detail'),
+
+    re_path(r'^agriculture', agriculture, name='agriculture'),
+    re_path(r'^product_detail', product_detail, name='product_detail'),
 ]

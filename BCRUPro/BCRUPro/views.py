@@ -479,3 +479,24 @@ def order_delete(request):
         return render(request, 'pages/examples/login.html')
     owner = User.objects.get(name=owner_name)
     return render(request, 'order_display.html', locals())
+
+
+@require_http_methods(['GET'])
+def agriculture(request):
+    if request.method == 'GET':
+        try:
+            owner_name = request.session['user_name']
+        except KeyError:
+            return render(request, 'pages/examples/login.html')
+        owner = User.objects.get(name=owner_name)
+        owner_name = request.session['user_name']
+        owner = User.objects.get(name=owner_name)
+        return render(request, 'pages/examples/agriculture.html', locals())
+
+
+@require_http_methods(['GET'])
+def product_detail(request):
+    if request.method == 'GET':
+        product_name = request.GET.get("product_name", None)
+        print(product_name)
+        return render(request, 'pages/examples/product-detail.html', locals())

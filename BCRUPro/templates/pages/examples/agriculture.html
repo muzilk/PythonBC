@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+    <p>Products</p>
+    <table class="table table-bordered" style="width:95%;height:auto;">
+        <tr>
+            <td width="200px" height="200px">
+                <div>
+                    <img src="{% static "adminlte/dist/img/agriculture-corn.png" %}" alt="Product Image" style="width:400px;height:260px;">
+                    <div><p>Corn</p></div>
+                    <div>
+                        <form method="get" action="{% url 'product_detail' %}">
+                            <input type="hidden" name="product_name" value="corn">
+                            <input type="submit" value="Detail" class="btn btn-sm btn-info">
+                        </form>
+                    </div>
+                </div>
+            </td>
+            <td width="200px" height="200px">
+                <div>
+                    <img src="{% static "adminlte/dist/img/agriculture-paddy.png" %}" alt="Product Image" style="width:400px;height:260px;">
+                    <p>Paddy</p>
+                    <div>
+                        <form method="get" action="{% url 'product_detail' %}">
+                            <input type="hidden" name="product_name" value="paddy">
+                            <input type="submit" value="Detail" class="btn btn-sm btn-info">
+                        </form>
+                    </div>
+                </div>
+            </td>
+            <td width="200px" height="200px">
+                <div>
+                    <img src="{% static "adminlte/dist/img/agriculture-tomato.png" %}" alt="Product Image" style="width:400px;height:260px;">
+                    <p>Tomato</p>
+                    <div>
+                        <form method="get" action="{% url 'product_detail' %}">
+                            <input type="hidden" name="product_name" value="tomato">
+                            <input type="submit" value="Detail" class="btn btn-sm btn-info">
+                        </form>
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </table>
+
+{% endblock %}
