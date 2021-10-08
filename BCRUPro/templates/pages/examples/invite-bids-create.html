@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+    <!-- Main content -->
+{% block content %}
+    <form action="{% url 'create_invite_bids' %}" method="post">
+      <div class="row">
+        <div class="col-12">
+          <div class="card card-primary">
+            <div class="card-header">
+              <h3 class="card-title">Invite bids</h3>
+
+              <div class="card-tools">
+                <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
+                  <i class="fas fa-minus"></i></button>
+              </div>
+            </div>
+            <div class="card-body">
+                <div class="form-group">
+                    <label for="inputName">Node</label>
+                    <select name="node_id" class="form-control custom-select">
+                    {% for node in nodes %}
+                        <option>{{ node.device_id }}</option>
+                    {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group">
+                <label for="inputName">Network type</label>
+                <select name="network_type" class="form-control custom-select">
+                    <option>EMBB</option>
+                    <option>URLLC</option>
+                    <option>MMTC</option>
+                </select>
+            </div>
+                <div class="form-group">
+                <label for="inputName">Area</label>
+                <input name="area" type="text" id="inputName" class="form-control">
+              </div>
+                <div class="form-group">
+                <label for="inputName">Time</label>
+                <input name="time" type="text" id="inputName" class="form-control">
+            </div>
+                <div class="form-group">
+                <label for="inputName">Number</label>
+                <input name="number" type="text" id="inputName" class="form-control">
+            </div>
+                <div class="form-group">
+                <label for="inputName">Data</label>
+                <input name="data" type="text" id="inputName" class="form-control">
+            </div>
+            </div>
+            <!-- /.card-body -->
+          </div>
+          <!-- /.card -->
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <a href="{% url 'index' %}" class="btn btn-secondary">Cancel</a>
+          <input type="submit" value="Generate bids" class="btn btn-success float-right">
+        </div>
+      </div>
+    </form>
+{% endblock %}
+
+

@@ -1,0 +1,117 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block head %}
+  <title>Family Details</title>
+  <!-- DataTables -->
+  <link rel="stylesheet" href="{% static 'adminlte/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css' %}">
+  <link rel="stylesheet" href="{% static 'adminlte/plugins/datatables-responsive/css/responsive.bootstrap4.min.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+            <!-- /.card -->
+
+                <div class="card card-primary">
+                    <div class="card-header">
+                        <h3 class="card-title">Bids Information</h3>
+                    </div>
+                </div>
+
+                <div class="card-body">
+                    <table id="family_details_table1" class="table-bordered table-striped" width="50%" style="float:left;">
+                        <tr>
+                            <th>Invatation ID</th>
+                            <td>{{ invite_bid.invitation_id }}</td>
+                        </tr>
+                        <tr>
+                            <th>Node</th>
+                            <td>{{ invite_bid.node }}</td>
+                        </tr>
+                        <tr>
+                            <th>Network Type</th>
+                            <td>{{ invite_bid.network_type }}</td>
+                        </tr>
+                        <tr>
+                            <th>Area</th>
+                            <td>{{ invite_bid.area }}</td>
+                        </tr>
+                    </table>
+                    <table id="family_details_table2" class="table-bordered table-striped" width="50%" style="float:right;">
+                        <tr>
+                            <th>Time</th>
+                            <td>{{ invite_bid.time }}</td>
+                        </tr>
+                        <tr>
+                            <th>Number</th>
+                            <td>{{ invite_bid.number }}</td>
+                        </tr>
+                        <tr>
+                            <th>Data</th>
+                            <td>{{ invite_bid.data }}</td>
+                        </tr>
+                        <tr>
+                            <th>Create Time</th>
+                            <td>{{ invite_bid.create_at }}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% if not submit_message %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+            <!-- /.card -->
+                <div class="card card-primary">
+                    <form action="{% url 'offer_bids' %}" method="post">
+                      <div class="row">
+                        <div class="col-12">
+                          <div class="card card-primary">
+                            <div class="card-header">
+                              <h3 class="card-title">Submit bids</h3>
+
+                              <div class="card-tools">
+                                <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
+                                  <i class="fas fa-minus"></i></button>
+                              </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="form-group">
+                                    <label for="inputName">Price</label>
+                                    <input name="invitation_id" type="hidden" id="inputName" class="form-control" value="{{ invitation_id }}">
+                                    <input name="price" type="text" id="inputName" class="form-control">
+                                </div>
+                            </div>
+                            <!-- /.card-body -->
+                          </div>
+                          <!-- /.card -->
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-12">
+                          <a href="{% url 'index' %}" class="btn btn-secondary">Cancel</a>
+                          <input type="submit" value="Submit bids" class="btn btn-success float-right">
+                        </div>
+                      </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    {% if submit_message %}
+        <div style="margin: auto"><h1 style="margin: auto">Your Price {{ price }}</h1></div>
+        <div class="alert alert-info">{{ submit_message }}</div>
+    {% endif %}
+    {% if feedback_message %}
+        <div class="alert alert-warning">
+            <h>Feedback Message</h>
+            <p>{{ feedback_message }}</p>
+        </div>
+    {% endif %}
+
+{% endblock %}

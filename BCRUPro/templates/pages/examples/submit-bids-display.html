@@ -1,0 +1,129 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block head %}
+  <title>users</title>
+  <!-- DataTables -->
+  <link rel="stylesheet" href="{% static 'adminlte/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css' %}">
+  <link rel="stylesheet" href="{% static 'adminlte/plugins/datatables-responsive/css/responsive.bootstrap4.min.css' %}">
+{% endblock %}
+
+{% block content %}
+    <!-- Main content -->
+    <div class="container-fluid">
+    <div class="row">
+      <div class="col-12">
+
+        <!-- /.card -->
+
+        <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">Submit Bids  [{{ invitation_id }}]</h3>
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body">
+                <table id="example" class="table table-bordered table-striped">
+                  <thead>
+                  <tr>
+                      {% for th in theader %}
+                        <th>
+                            <strong>{{ th }}</strong>
+                        </th>
+                      {% endfor %}
+                      {% if owner.role == "customer" %}
+                          <th></th>
+                      {% endif %}
+                  </tr>
+                  </thead>
+                  <tbody>
+                  {% for bid in submit_bids %}
+                    <tr>
+                        <td>{{ bid.bid }}</td>
+                        <td>{{ bid.price }}</td>
+                        <td>{{ bid.create_at }}</td>
+                        <td>{{ bid.sign_status }}</td>
+                        {% if owner.role == "customer" %}
+                            {% if not bid.status and not bid.invite_bid.sign_status %}
+                                <td>
+                                    <form method="post" action="{% url 'sign_bids' %}">
+                                        <input type="hidden" name="bid" value="{{ bid.bid }}">
+                                        <input type="submit" value="Signed" class="btn btn-sm btn-info">
+                                    </form>
+                                </td>
+                            {% else %}
+                                {% if bid.sign_status and bid.invite_bid.deploy_status %}
+                                    <td>
+                                        <button id="pay_bids" href="#" class="btn btn-sm btn-info">Pay</button>
+                                    </td>
+                                {% else %}
+                                    <td></td>
+                                {% endif %}
+                            {% endif %}
+                        {% endif %}
+                    </tr>
+                  {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+              <!-- /.card-body -->
+            </div>
+        <!-- /.card -->
+      </div>
+      <!-- /.col -->
+    </div>
+    <!-- /.row -->
+    </div>
+    {% if feedback_message %}
+        <div class="alert alert-warning">
+            <h>Feedback Message</h>
+            <p>{{ feedback_message }}</p>
+        </div>
+    {% endif %}
+    <!-- /.content -->
+{% endblock %}
+
+
+{% block script %}
+    <!-- DataTables -->
+    <script src="{% static 'adminlte/plugins/datatables/jquery.dataTables.min.js' %}"></script>
+    <script src="{% static 'adminlte/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js' %}"></script>
+    <script src="{% static 'adminlte/plugins/datatables-responsive/js/dataTables.responsive.min.js' %}"></script>
+    <script src="{% static 'adminlte/plugins/datatables-responsive/js/responsive.bootstrap4.min.js' %}"></script>
+
+<!-- page script -->
+
+<script>
+  $(function () {
+    $("#example").DataTable({
+      "responsive": true,
+      "autoWidth": false,
+    });
+    $('#example1').DataTable({
+      "paging": true,
+      "lengthChange": false,
+      "searching": true,
+      "ordering": true,
+      "info": true,
+      "autoWidth": false,
+      "responsive": true,
+    });
+  });
+
+  $('#pay_bids').click(function(){
+        $.ajax({
+            type:'get',
+            traditional :true,
+            url:'{% url 'deploy_bids' %}',
+            dataType: 'json',
+            success:function(data){
+                if(data.status == 'success'){
+                    alert("Success");
+                }else {
+                    alert("Failed");
+                }
+            }
+        });
+        return false;
+  });
+</script>
+{% endblock %}

@@ -37,3 +37,102 @@ class Block(models.Model):
         return self.block_id
 
 
+class InviteBids(models.Model):
+    process_stat = (
+        ('opening', 'opening'),
+        ('closed', 'closed'),
+    )
+    invitation_id = models.TextField(unique=True)
+    owner = models.ForeignKey(User, primary_key=False, blank=False, on_delete=PROTECT)
+    node = models.ForeignKey(Node, primary_key=False, blank=False, on_delete=PROTECT)
+    network_type = models.TextField()
+    area = models.TextField()
+    time = models.TextField()
+    number = models.TextField()
+    data = models.TextField()
+    sign_status = models.BooleanField(default=False)
+    deploy_status = models.BooleanField(default=False)
+    verify_status = models.BooleanField(default=False)
+    winner = models.TextField()
+    process_status = models.CharField(max_length=32, choices=process_stat, default='opening')
+    create_at = models.DateTimeField(auto_now=True)
+
+    @staticmethod
+    def get_threader():
+        return ["ID", "Node", "Network Type", "Area", "Time", "Number", "Data", "Create Time", "Winner"]
+
+    def __str__(self):
+        return self.invitation_id
+
+
+class SubmitBids(models.Model):
+    bid = models.TextField(unique=True)
+    owner = models.ForeignKey(User, primary_key=False, blank=False, on_delete=PROTECT)
+    invite_bid = models.ForeignKey(InviteBids, primary_key=False, blank=False, on_delete=PROTECT)
+    price = models.IntegerField()
+    sign_status = models.BooleanField(default=False)
+    create_at = models.DateTimeField(auto_now=True)
+
+    @staticmethod
+    def get_threader():
+        return ["BID", "Price", "Create Time", "Status"]
+
+    def __str__(self):
+        return self.bid
+
+
+class Product(models.Model):
+    name = models.TextField(unique=True)
+    image_name = models.TextField(unique=True)
+    overview = models.TextField(default="overview")
+    create_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.name
+
+    def get_static_image(self):
+        return "adminlte/dist/img/"+str(self.image_name)
+
+    @staticmethod
+    def get_image_basename(name):
+        return name.split("/")[-1]
+
+
+class Vendor(models.Model):
+    name = models.TextField(unique=True)
+    category = models.ForeignKey(Product, primary_key=False, blank=False, on_delete=PROTECT, default=1)
+    logo = models.TextField(unique=True)
+    overview = models.TextField(default=None)
+    create_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.name
+
+    def get_static_logo(self):
+        return "adminlte/dist/img/"+str(self.logo)
+
+    @staticmethod
+    def get_threader():
+        return ["Name", "Overview"]
+
+
+class Order(models.Model):
+    order_id = models.TextField(unique=True)
+    vendor = models.ForeignKey(Vendor, primary_key=False, blank=False, on_delete=PROTECT)
+    user_number = models.IntegerField(default=0)
+    latency = models.IntegerField(default=0)
+    bandwidth_down = models.IntegerField(default=0)
+    bandwidth_up = models.IntegerField(default=0)
+    capacity_down = models.IntegerField(default=0)
+    capacity_up = models.IntegerField(default=0)
+    start_time = models.DateTimeField(null=True)
+    end_time = models.DateTimeField(null=True)
+    create_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.order_id
+
+    @staticmethod
+    def get_threader():
+        return ["Order", "Product", "Users Number", "Latency",
+                "Bandwidth Up", "Capacity Up", "Create Time"]

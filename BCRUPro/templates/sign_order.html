@@ -1,0 +1,168 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+    <form action="{% url 'buy' %}" method="post">
+        <div class="row" style="width:95%;height:auto;">
+            <div class="col-12">
+                <div class="card card-primary">
+                    <div class="card-header">
+                        <h3 class="card-title">Introduction</h3>
+                        <div class="card-tools">
+                            <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
+                                <i class="fas fa-minus"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group col-md-6 float-left">
+                            <label for="inputName">{{ vendor.name }}</label>
+                        </div>
+                        <div class="form-group col-md-6 float-right">
+                            <img src="{% static vendor.logo %}" alt="Product Image" style="width:100%;height:auto;">
+                        </div>
+                        <div class="form-group col-md-6 float-left">
+                            <p>{{ vendor.overview }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row" style="width:95%;height:auto;">
+            <div class="col-12">
+                <div class="card card-primary">
+                    <div class="card-header">
+                        <h3 class="card-title">Settings</h3>
+                        <div class="card-tools">
+                            <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
+                                <i class="fas fa-minus"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label for="inputName">vendor</label>
+                            <input name="vendor_name" type="text" id="inputName" value="{{ vendor.name }}" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="inputName">users number</label>
+                            {% if product_name == "game" %}
+                                <input id="user_number" name="user_number" type="range" min="0" max="100" value="90" class="form-control" oninput="change('user_number');price()" onchange="change('user_number');price()">
+                                <input id="user_number_show" type="number" value="90" class="form-control col-2">
+                            {% else %}
+                                <input id="user_number" name="user_number" type="range" min="0" max="100" value="10" class="form-control" oninput="change('user_number');price()" onchange="change('user_number');price()">
+                                <input id="user_number_show" type="number" value="10" class="form-control col-2">
+                            {% endif %}
+                        </div>
+                        <div class="form-group">
+                            <label for="inputName">reliability</label><br>
+                            <input type="radio" name="reliability" value="99.99%" class="radio col-2">99.99%
+                            <input type="radio" name="reliability" value="99.999%" class="radio col-2">99.999%
+                            <input type="radio" name="reliability" value="99.9999%" class="radio col-2">99.9999%
+                        </div>
+                        <div class="form-group">
+                            <label for="inputName">share level</label><br>
+                            <input type="radio" name="share" value="shared" class="radio col-2">shared
+                            <input type="radio" name="share" value="non-shared" class="radio col-2">non-shared
+                        </div>
+                        <div class="form-group">
+                            <label for="inputName">latency(ms)</label>
+                            {% if product_name == "game" %}
+                                <input id="latency" name="latency" type="range" min="0" max="100" value="5" class="form-control" oninput="change('latency');price()" onchange="change('latency');price()">
+                                <input id="latency_show" type="number" value="5" class="form-control col-2">
+                            {% else %}
+                                <input id="latency" name="latency" type="range" min="0" max="100" value="46" class="form-control" oninput="change('latency');price()" onchange="change('latency');price()">
+                                <input id="latency_show" type="number" value="46" class="form-control col-2">
+                            {% endif %}
+                        </div>
+                        <div class="form-group">
+                            <label for="inputName">bandwidth (Mbps)</label>
+                            <input id="bandwidth_up" name="bandwidth_up" type="range" min="0" max="1000" value="10" class="form-control" oninput="change('bandwidth_up');price()" onchange="change('bandwidth_up');price()">
+                            <input id="bandwidth_up_show" type="number" value="10" class="form-control col-2">
+                        </div>
+                        <div class="form-group">
+                            <label for="inputName">capacity (GB)</label>
+                            {% if product_name == "game" %}
+                                <input id="capacity_up" name="capacity_up" type="range" min="0" max="200" value="180" class="form-control" oninput="change('capacity_up');price()" onchange="change('capacity_up');price()">
+                                <input id="capacity_up_show" type="number" value="180" class="form-control col-2">
+                            {% else %}
+                                <input id="capacity_up" name="capacity_up" type="range" min="0" max="200" value="20" class="form-control" oninput="change('capacity_up');price()" onchange="change('capacity_up');price()">
+                                <input id="capacity_up_show" type="number" value="20" class="form-control col-2">
+                            {% endif %}
+                        </div>
+                        <div class="form-group">
+                            <label for="inputName">Start time</label>
+                            <input id="start_time" name="start_time" type="datetime-local" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="inputName">End time</label>
+                            <input id="end_time" name="end_time" type="datetime-local" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <p align="center" style="color:white;background:#00A000;font-size:40px;font-family: 'SimHei'"><font>Price: <span id="price">0</span> $ per hour</font></p>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12" style="float:right">
+                                <a href="{% url 'mall' %}" class="btn btn-secondary">Cancel</a>
+                                <input type="submit" value="Buy" class="btn btn-success float-right">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+<script type='text/javascript'>
+    function change(id) {
+        var num = document.getElementById(id);
+        var location = document.getElementById(id+"_show");
+        location.value = num.value;
+    }
+
+    function price() {
+        var price_location = document.getElementById("price");
+        var user_number = document.getElementById("user_number_show");
+        var latency = document.getElementById("latency_show");
+        var bandwidth_up = document.getElementById("bandwidth_up_show");
+        var capacity_up = document.getElementById("capacity_up_show");
+
+        var vswirch_count = 1;
+        var vswirch_vcpu = 11-parseInt(latency.value/10);
+        var vswirch_ram = parseInt(bandwidth_up.value/10);
+
+        var rounting_agent_count = 1;
+        var rounting_agent_vcpu = parseInt(vswirch_vcpu/10)+1;
+        var rounting_agent_ram = 8;
+
+        var data_plane_link_count = user_number.value;
+        var data_plane_link_vcpu = 1;
+        var data_plane_link_ram = parseInt(capacity_up.value/20)+1;
+
+        var key_value_database_rount = 1;
+        var key_value_database_vcpu = 1;
+        var key_value_database_ram = user_number.value;
+
+        var common_service_adp_count = 1;
+        var common_service_adp_vcpu = 1;
+        var common_service_adp_ram = 3;
+
+        var vcpu_per_network =
+            rounting_agent_count*rounting_agent_vcpu
+            +data_plane_link_count*data_plane_link_vcpu
+            +vswirch_count*vswirch_vcpu
+            +key_value_database_rount*key_value_database_vcpu
+            +common_service_adp_count*common_service_adp_vcpu;
+
+        var ram_per_network =
+            rounting_agent_count*rounting_agent_ram
+            +data_plane_link_count*data_plane_link_ram
+            +vswirch_count*vswirch_ram
+            +key_value_database_rount*key_value_database_ram
+            +common_service_adp_count*common_service_adp_ram;
+
+        var price_number = parseFloat(vcpu_per_network*0.05+ram_per_network*0.015).toFixed(3);
+        price_location.innerHTML = price_number;
+
+    }
+</script>
+{% endblock %}

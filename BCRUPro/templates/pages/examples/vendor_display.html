@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+        <div class="row" style="width:95%;height:auto;">
+            <div class="col-12">
+                    <div class="card-header">
+                        <h3 class="card-title">Vendors</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group col-md-12">
+                            <label for="inputName">{{ vendor.name }}</label>
+                        </div>
+                        <div class="form-group col-md-3 float-right">
+                            <img src="{% static product.image_name %}" alt="Product Image" style="width:100%;height:auto;">
+                        </div>
+                        <div class="form-group col-md-9 float-left">
+                            <table id="order_table" class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        {% for th in theader %}
+                                        <th>
+                                            <strong>{{ th }}</strong>
+                                        </th>
+                                        {% endfor %}
+                                        <th>Option</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                  {% for vendor in vendors %}
+                                    <tr>
+                                        <td>
+                                            <div class="form-group col-md-6">
+                                                <img src="{% static vendor.logo %}" alt="Product Image" style="width:200%;height:auto;">
+                                            </div>
+                                            <div class="form-group col-md-6">{{ vendor.name }}</div>
+                                        </td>
+                                        <td>{{ vendor.overview }}</td>
+                                        <td>
+                                            <form method="post" action="{% url 'sign_order' %}">
+                                                <input type="hidden" name="vendor_name" value="{{ vendor.name }}">
+                                                <input type="submit" value="Buy" class="btn btn-sm btn-info">
+                                            </form>
+                                        </td>
+                                    </tr>
+                                  {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+        </div>
+{% endblock %}
