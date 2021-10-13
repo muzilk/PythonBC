@@ -491,6 +491,7 @@ def agriculture(request):
         owner = User.objects.get(name=owner_name)
         owner_name = request.session['user_name']
         owner = User.objects.get(name=owner_name)
+        crops = Crops.objects.all()
         return render(request, 'pages/examples/agriculture.html', locals())
 
 
@@ -498,5 +499,5 @@ def agriculture(request):
 def product_detail(request):
     if request.method == 'GET':
         product_name = request.GET.get("product_name", None)
-        print(product_name)
+        crop = Crops.objects.get(name=product_name)
         return render(request, 'pages/examples/product-detail.html', locals())

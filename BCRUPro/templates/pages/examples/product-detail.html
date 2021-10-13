@@ -26,20 +26,10 @@
                     </div>
                     <div class="card-body">
                         <div class="form-group">
-                            <label for="inputName">product: {{ product_name }}</label>
+                            <label for="inputName">product: {{ crop.name }}</label>
                         </div>
-{#                        <div class="form-group">#}
-{#                            <label for="inputName">temperature</label>#}
-{#                            <input id="temperature" name="temperature" type="range" min="0" max="100" value="10" class="form-control" oninput="change('temperature');price()" onchange="change('user_number');price()">#}
-{#                            <input id="temperature_show" type="number" value="10" class="form-control col-2">#}
-{#                        </div>#}
-{#                        <div class="form-group">#}
-{#                            <label for="inputName">humidity</label>#}
-{#                            <input id="humidity" name="humidity" type="range" min="0" max="100" value="10" class="form-control" oninput="change('humidity');price()" onchange="change('user_number');price()">#}
-{#                            <input id="humidity_show" type="number" value="10" class="form-control col-2">#}
-{#                        </div>#}
-                        <div id="temperature_container" style="min-width:400px;height:400px"></div>
                         <div id="humidity_container" style="min-width:400px;height:400px"></div>
+                        <div id="temperature_container" style="min-width:400px;height:400px"></div>
                         <div class="row">
                             <div class="col-md-12" style="float:right">
                                 <a href="{% url 'agriculture' %}" class="btn btn-secondary">Cancel</a>
@@ -64,7 +54,8 @@
 });
 // Create the chart
     var interval_time = 100;
-    var temperature_target_value = 25;
+    var temperature_target_value = {{ crop.temperature }};
+    var temperature_delta = 5;
     Highcharts.stockChart('temperature_container', {
         chart : {
             events : {
@@ -81,6 +72,12 @@
                         var x = (new Date()).getTime(),
                             y = temperature_target_value;
                         target_series.addPoint([x, y], true, true);
+                    }, interval_time);
+                    var target_series2 = this.series[2];
+                    setInterval(function () {
+                        var x = (new Date()).getTime(),
+                            y = temperature_target_value-temperature_delta;
+                        target_series2.addPoint([x, y], true, true);
                     }, interval_time);
                 }
             }
@@ -124,7 +121,7 @@
                 return data;
             }())
 		}, {
-            name: "目标值",
+            name: "温度区间上限",
             data : (function () {
                 // generate an array of random data
                 var data = [], time = (new Date()).getTime(), i;
@@ -136,11 +133,28 @@
                 }
                 return data;
             }()),
-            color: "red"}
+            color: "red"
+        }, {
+            name: "温度区间下限",
+            data : (function () {
+                // generate an array of random data
+                var data = [], time = (new Date()).getTime(), i;
+                for (i = -999; i <= 0; i += 1) {
+                    data.push([
+                        time + i * interval_time,
+                        temperature_target_value-temperature_delta
+                    ]);
+                }
+                return data;
+            }()),
+            color: "red",
+            dashStyle: 'longdash'
+        }
         ]
     });
 
-    var humidity_target_value = 70;
+    var humidity_target_value = {{ crop.humidity }};
+    var humidity_delta = 5;
     Highcharts.stockChart('humidity_container', {
         chart : {
             events : {
@@ -157,6 +171,12 @@
                         var x = (new Date()).getTime(),
                             y = humidity_target_value;
                         target_series.addPoint([x, y], true, true);
+                    }, interval_time);
+                    var target_series2 = this.series[2];
+                    setInterval(function () {
+                        var x = (new Date()).getTime(),
+                            y = humidity_target_value-humidity_delta;
+                        target_series2.addPoint([x, y], true, true);
                     }, interval_time);
                 }
             }
@@ -200,7 +220,7 @@
                 return data;
             }())
 		}, {
-            name: "目标值",
+            name: "湿度区间上限",
             data : (function () {
                 // generate an array of random data
                 var data = [], time = (new Date()).getTime(), i;
@@ -212,7 +232,23 @@
                 }
                 return data;
             }()),
-            color: "green"}
+            color: "green"
+        }, {
+            name: "湿度区间下限",
+            data: (function () {
+                // generate an array of random data
+                var data = [], time = (new Date()).getTime(), i;
+                for (i = -999; i <= 0; i += 1) {
+                    data.push([
+                        time + i * interval_time,
+                        humidity_target_value-humidity_delta
+                    ]);
+                }
+                return data;
+            }()),
+            color: "green",
+            dashStyle: 'longdash'
+        }
         ]
     });
 </script>
