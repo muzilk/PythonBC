@@ -141,5 +141,7 @@ class Order(models.Model):
 class Crops(models.Model):
     name = models.TextField(unique=True)
     image_name = models.TextField()
-    temperature = models.IntegerField(default=0)
-    humidity = models.IntegerField(default=0)
+    temperature_limit = models.IntegerField(default=0)
+    temperature_data = models.IntegerField(default=0)
+    humidity_limit = models.IntegerField(default=0)
+    humidity_data = models.IntegerField(default=0)

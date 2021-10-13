@@ -1,5 +1,6 @@
 import datetime
 import functools
+import json
 import time
 # Create your views here.
 from functools import wraps
@@ -501,3 +502,27 @@ def product_detail(request):
         product_name = request.GET.get("product_name", None)
         crop = Crops.objects.get(name=product_name)
         return render(request, 'pages/examples/product-detail.html', locals())
+
+
+@require_http_methods(["GET"])
+def get_crops_data(request):
+    if request.method == 'GET':
+        product_name = request.GET.get("product_name", None)
+        crop = Crops.objects.get(name=product_name)
+        response = {"temperature": crop.temperature_data, "humidity": crop.humidity_data}
+        return HttpResponse(json.dumps(response))
+
+
+@require_http_methods(["POST"])
+def update_crops_data(request):
+    if request.method == 'POST':
+        product_name = request.POST.get("product_name", None)
+        crop = Crops.objects.get(name=product_name)
+        temperature = request.POST.get("temperature", None)
+        humidity = request.POST.get("humidity", None)
+        if temperature:
+            crop.temperature_data = temperature
+        if humidity:
+            crop.humidity_data = humidity
+        crop.save()
+        return HttpResponse(json.dumps({"return": "success"}))
