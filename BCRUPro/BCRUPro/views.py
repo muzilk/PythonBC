@@ -1,10 +1,13 @@
 import datetime
 import functools
 import json
+import os
 import subprocess
 import time
 # Create your views here.
 from functools import wraps
+
+import paramiko as paramiko
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.contrib import messages
@@ -530,16 +533,37 @@ def update_crops_data(request):
         return HttpResponse(json.dumps({"return": "success"}))
 
 
+@require_http_methods(["GET"])
+def get_deploy_status(request):
+    if request.method == 'GET':
+        product_name = request.GET.get("product_name", None)
+        crop = Crops.objects.get(name=product_name)
+        response = {"deploy_status": crop.deploy_status}
+        return HttpResponse(json.dumps(response))
+
+
+@require_http_methods(["POST"])
+def update_deploy_status(request):
+    if request.method == 'POST':
+        product_name = request.POST.get("product_name", None)
+        deploy_status = request.POST.get("deploy_status", None)
+        crop = Crops.objects.get(name=product_name)
+        if deploy_status:
+            crop.deploy_status = deploy_status
+        crop.save()
+        return HttpResponse(json.dumps({"return": "success"}))
+
+
 @require_http_methods(["POST"])
 def crops_deploy(request):
     if request.method == 'POST':
         product_name = request.POST.get("product_name", None)
-        cmd = "ssh pi@172.20.10.4"
-        # (status, output) = subprocess.getstatusoutput(cmd)
-        # response = {"product_name": product_name, "status": status, "output": output}
-        # if status == 0:
-        #     response.update({"deploy_trigger": "success"})
-        # else:
-        #     response.update({"deploy_trigger": "failed"})
+        crop = Crops.objects.get(name=product_name)
         response = {}
+        try:
+            crop.deploy_status = True
+            crop.save()
+            response.update({"deploy_trigger": "success"})
+        except:
+            response.update({"deploy_trigger": "failed"})
         return HttpResponse(json.dumps(response))

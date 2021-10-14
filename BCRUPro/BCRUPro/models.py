@@ -148,3 +148,4 @@ class Crops(models.Model):
     ph_value = models.FloatField(default=0.0)
     nitrogen = models.FloatField(default=0.0)
     herbicide = models.FloatField(default=0.0)
+    deploy_status = models.BooleanField(default=False)
