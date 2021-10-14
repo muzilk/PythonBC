@@ -1,10 +1,10 @@
 import datetime
 import functools
 import json
+import subprocess
 import time
 # Create your views here.
 from functools import wraps
-
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.contrib import messages
@@ -493,6 +493,8 @@ def agriculture(request):
         owner_name = request.session['user_name']
         owner = User.objects.get(name=owner_name)
         crops = Crops.objects.all()
+        crops1 = crops[0:3]
+        crops2 = crops[3:]
         return render(request, 'pages/examples/agriculture.html', locals())
 
 
@@ -526,3 +528,18 @@ def update_crops_data(request):
             crop.humidity_data = humidity
         crop.save()
         return HttpResponse(json.dumps({"return": "success"}))
+
+
+@require_http_methods(["POST"])
+def crops_deploy(request):
+    if request.method == 'POST':
+        product_name = request.POST.get("product_name", None)
+        cmd = "ssh pi@172.20.10.4"
+        # (status, output) = subprocess.getstatusoutput(cmd)
+        # response = {"product_name": product_name, "status": status, "output": output}
+        # if status == 0:
+        #     response.update({"deploy_trigger": "success"})
+        # else:
+        #     response.update({"deploy_trigger": "failed"})
+        response = {}
+        return HttpResponse(json.dumps(response))
