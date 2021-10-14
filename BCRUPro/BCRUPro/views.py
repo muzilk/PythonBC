@@ -7,7 +7,6 @@ import time
 # Create your views here.
 from functools import wraps
 
-import paramiko as paramiko
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.contrib import messages
