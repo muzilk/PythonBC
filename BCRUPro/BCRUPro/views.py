@@ -555,7 +555,7 @@ def search_deploy_crop(request):
                 "humidity_data": crop.humidity_data
             }
         except:
-            response = {"result": "Not find"}
+            response = {}
         return HttpResponse(json.dumps(response))
 
 
