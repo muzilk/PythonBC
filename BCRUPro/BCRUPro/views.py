@@ -550,7 +550,8 @@ def update_deploy_status(request):
         if deploy_status:
             crop.deploy_status = deploy_status
         crop.save()
-        return HttpResponse(json.dumps({"return": "success"}))
+        response = {"return": "success"}
+        return HttpResponse(json.dumps(response))
 
 
 @require_http_methods(["POST"])
@@ -562,7 +563,7 @@ def crops_deploy(request):
         try:
             crop.deploy_status = True
             crop.save()
-            response.update({"deploy_trigger": "success"})
+            response.update({"deploy_trigger": "success", "temperature_limit": crop.temperature_limit, "humidity_limit": crop.humidity_limit})
         except:
             response.update({"deploy_trigger": "failed"})
         return HttpResponse(json.dumps(response))

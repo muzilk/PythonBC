@@ -17,14 +17,6 @@
         <div class="row" style="width:95%;height:auto;">
             <div class="col-12">
                 <div class="card card-primary">
-                    <div class="card-header">
-                        <h3 class="card-title">Parameter</h3>
-                        <div class="card-tools">
-                            <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
-                                <i class="fas fa-minus"></i>
-                            </button>
-                        </div>
-                    </div>
                     <div class="card-body">
                         <div class="form-group">
                             <label for="inputName" >product: {{ crop.name }}</label>
@@ -60,7 +52,7 @@
     function deploy(){
         $.post("/crops_deploy",{"product_name": crop_name},function(data){
              var result = JSON.parse(data);
-             alert(result.deploy_trigger);
+             alert(result.deploy_trigger+"\nhumidity limit: "+result.humidity_limit+"\ntemperature limit: "+result.temperature_limit);
             })
 
         }
