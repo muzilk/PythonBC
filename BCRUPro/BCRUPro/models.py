@@ -136,3 +136,16 @@ class Order(models.Model):
     def get_threader():
         return ["Order", "Product", "Users Number", "Latency",
                 "Bandwidth Up", "Capacity Up", "Create Time"]
+
+
+class Crops(models.Model):
+    name = models.TextField(unique=True)
+    image_name = models.TextField()
+    temperature_limit = models.FloatField(default=0.0)
+    temperature_data = models.FloatField(default=0.0)
+    humidity_limit = models.FloatField(default=0.0)
+    humidity_data = models.FloatField(default=0.0)
+    ph_value = models.FloatField(default=0.0)
+    nitrogen = models.FloatField(default=0.0)
+    herbicide = models.FloatField(default=0.0)
+    deploy_status = models.BooleanField(default=False)

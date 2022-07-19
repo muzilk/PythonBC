@@ -9,6 +9,10 @@
 
   <!-- Tell the browser to be responsive to screen width -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="https://code.highcharts.com.cn/jquery/jquery-1.8.3.min.js"></script>
+  <script src="https://cdn.highcharts.com.cn/highstock/highstock.js"></script>
+  <script src="https://cdn.highcharts.com.cn/highcharts/modules/exporting.js"></script>
+  <script src="https://code.highcharts.com.cn/highcharts-plugins/highcharts-zh_CN.js"></script>
   <!-- Font Awesome -->
   <link rel="stylesheet" href="{% static 'adminlte/plugins/fontawesome-free/css/all.min.css' %}">
   <!-- Ionicons -->
@@ -188,139 +192,29 @@
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
-          <li class="nav-item has-treeview menu-open">
-            <a href="#" class="nav-link active">
-              <i class="nav-icon fas fa-tachometer-alt"></i>
-              <p>
-                Dashboard
-                <i class="right fas fa-angle-left"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="{% url 'index' %}" class="nav-link active">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Dashboard v1</p>
-                </a>
-              </li>
-{#              <li class="nav-item">#}
-{#                <a href="{% url 'index2' %}" class="nav-link">#}
-{#                  <i class="far fa-circle nav-icon"></i>#}
-{#                  <p>Dashboard v2</p>#}
-{#                </a>#}
-{#              </li>#}
-{#              <li class="nav-item">#}
-{#                <a href="{% url 'index3' %}" class="nav-link">#}
-{#                  <i class="far fa-circle nav-icon"></i>#}
-{#                  <p>Dashboard v3</p>#}
-{#                </a>#}
-{#              </li>#}
-            </ul>
-          </li>
-
           <li class="nav-item has-treeview">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-book"></i>
               <p>
-                Node pages
+                Products
                 <i class="fas fa-angle-left right"></i>
               </p>
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="{% url 'create_new_node' %}" class="nav-link">
+                <a href="{% url 'agriculture' %}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Create new node</p>
-                </a>
-              </li>
-{#              <li class="nav-item">#}
-{#                <a href="{% url 'node_edit' %}" class="nav-link">#}
-{#                  <i class="far fa-circle nav-icon"></i>#}
-{#                  <p>Project Edit</p>#}
-{#                </a>#}
-{#              </li>#}
-{#              <li class="nav-item">#}
-{#                <a href="{% url 'node_detail' %}" class="nav-link">#}
-{#                  <i class="far fa-circle nav-icon"></i>#}
-{#                  <p>Project Detail</p>#}
-{#                </a>#}
-{#              </li>#}
-{#              <li class="nav-item">#}
-{#                <a href="pages/examples/contacts.html" class="nav-link">#}
-{#                  <i class="far fa-circle nav-icon"></i>#}
-{#                  <p>Contacts</p>#}
-{#                </a>#}
-{#              </li>#}
-            </ul>
-          </li>
-          <li class="nav-item has-treeview">
-            <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-table"></i>
-              <p>
-                Tables
-                <i class="fas fa-angle-left right"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="{% url 'block_display' %}" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>BlocksTables</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="{% url 'create_new_block' %}" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>New block</p>
+                  <p>Agriculture</p>
                 </a>
               </li>
             </ul>
-          </li>
-          <li class="nav-item has-treeview">
-            <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-table"></i>
-              <p>
-                Bids
-                <i class="fas fa-angle-left right"></i>
-              </p>
-            </a>
             <ul class="nav nav-treeview">
-              {% if owner.role == "customer" %}
               <li class="nav-item">
-                <a href="{% url 'invite_bids_display' %}" class="nav-link">
+                <a href="#" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Invite bids</p>
+                  <p>Games</p>
                 </a>
               </li>
-              <li class="nav-item">
-                <a href="{% url 'mall' %}" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Mall</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="{% url 'order_display' %}" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Orders</p>
-                </a>
-              </li>
-              {% endif %}
-                {% if owner.role == "csp" %}
-              <li class="nav-item">
-                <a href="{% url 'invite_bids_display' %}" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Submit bids</p>
-                </a>
-              </li>
-                {% endif %}
-                {% if owner.role == "chain" %}
-              <li class="nav-item">
-                <a href="{% url 'block_display' %}" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Settlement bids</p>
-                </a>
-              </li>
-                {% endif %}
             </ul>
           </li>
         </ul>

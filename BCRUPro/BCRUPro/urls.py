@@ -65,4 +65,14 @@ urlpatterns = [
     re_path(r'^buy', buy, name='buy'),
     re_path(r'^order_display', order_display, name='order_display'),
     re_path(r'^order_detail', order_detail, name='order_detail'),
+
+    re_path(r'^agriculture', agriculture, name='agriculture'),
+    re_path(r'^product_detail', product_detail, name='product_detail'),
+
+    re_path(r'^get_crops_data', get_crops_data, name='get_crops_data'),
+    re_path(r'^update_crops_data', update_crops_data, name='get_crops_data'),
+    re_path(r'^crops_deploy', crops_deploy, name='crops_deploy'),
+    re_path(r'^get_deploy_status', get_deploy_status, name='get_deploy_status'),
+    re_path(r'^search_deploy_crop', search_deploy_crop, name='search_deploy_crop'),
+    re_path(r'^update_deploy_status', update_deploy_status, name='update_deploy_status'),
 ]

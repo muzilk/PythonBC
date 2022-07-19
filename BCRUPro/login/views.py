@@ -48,7 +48,7 @@ def login(request):
 
                 product1 = Product.objects.all()[0:3]
                 product2 = Product.objects.all()[3:]
-                return render(request, 'pages/examples/mall.html', locals())
+                return render(request, 'pages/examples/agriculture.html', locals())
             else:
                 return render(request, 'pages/examples/login.html', {"message": "Password is error"})
         else:

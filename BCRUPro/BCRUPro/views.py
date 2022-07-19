@@ -1,5 +1,8 @@
 import datetime
 import functools
+import json
+import os
+import subprocess
 import time
 # Create your views here.
 from functools import wraps
@@ -479,3 +482,108 @@ def order_delete(request):
         return render(request, 'pages/examples/login.html')
     owner = User.objects.get(name=owner_name)
     return render(request, 'order_display.html', locals())
+
+
+@require_http_methods(['GET'])
+def agriculture(request):
+    if request.method == 'GET':
+        try:
+            owner_name = request.session['user_name']
+        except KeyError:
+            return render(request, 'pages/examples/login.html')
+        owner = User.objects.get(name=owner_name)
+        owner_name = request.session['user_name']
+        owner = User.objects.get(name=owner_name)
+        crops = Crops.objects.all()
+        crops1 = crops[0:3]
+        crops2 = crops[3:]
+        return render(request, 'pages/examples/agriculture.html', locals())
+
+
+@require_http_methods(['GET'])
+def product_detail(request):
+    if request.method == 'GET':
+        product_name = request.GET.get("product_name", None)
+        crop = Crops.objects.get(name=product_name)
+        return render(request, 'pages/examples/product-detail.html', locals())
+
+
+@require_http_methods(["GET"])
+def get_crops_data(request):
+    if request.method == 'GET':
+        product_name = request.GET.get("product_name", None)
+        crop = Crops.objects.get(name=product_name)
+        response = {"temperature": crop.temperature_data, "humidity": crop.humidity_data}
+        return HttpResponse(json.dumps(response))
+
+
+@require_http_methods(["POST"])
+def update_crops_data(request):
+    if request.method == 'POST':
+        product_name = request.POST.get("product_name", None)
+        crop = Crops.objects.get(name=product_name)
+        temperature = request.POST.get("temperature", None)
+        humidity = request.POST.get("humidity", None)
+        if temperature:
+            crop.temperature_data = temperature
+        if humidity:
+            crop.humidity_data = humidity
+        crop.save()
+        return HttpResponse(json.dumps({"return": "success"}))
+
+
+@require_http_methods(["GET"])
+def get_deploy_status(request):
+    if request.method == 'GET':
+        product_name = request.GET.get("product_name", None)
+        crop = Crops.objects.get(name=product_name)
+        response = {"deploy_status": crop.deploy_status}
+        return HttpResponse(json.dumps(response))
+
+
+@require_http_methods(["GET"])
+def search_deploy_crop(request):
+    if request.method == 'GET':
+        try:
+            crop = Crops.objects.get(deploy_status=True)
+            response = {
+                "product_name": crop.name,
+                "deploy_status": crop.deploy_status,
+                "temperature_limit": crop.temperature_limit,
+                "temperature_data": crop.temperature_data,
+                "humidity_limit": crop.humidity_limit,
+                "humidity_data": crop.humidity_data
+            }
+        except:
+            response = {}
+        return HttpResponse(json.dumps(response))
+
+
+@require_http_methods(["POST"])
+def update_deploy_status(request):
+    if request.method == 'POST':
+        product_name = request.POST.get("product_name", None)
+        deploy_status = request.POST.get("deploy_status", None)
+        crop = Crops.objects.get(name=product_name)
+        if deploy_status:
+            crop.deploy_status = deploy_status
+        crop.save()
+        response = {"return": "success"}
+        return HttpResponse(json.dumps(response))
+
+
+@require_http_methods(["POST"])
+def crops_deploy(request):
+    if request.method == 'POST':
+        product_name = request.POST.get("product_name", None)
+        crop = Crops.objects.get(name=product_name)
+        response = {}
+        try:
+            crop.deploy_status = True
+            crop.save()
+            response.update({"deploy_trigger": "success",
+                             "temperature_limit": crop.temperature_limit,
+                             "humidity_limit": crop.humidity_limit})
+        except:
+            response.update({"deploy_trigger": "failed"})
+        return HttpResponse(json.dumps(response))

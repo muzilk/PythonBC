@@ -2,48 +2,14 @@
 version: "3"
 
 services:
-#  db:
-#    image: mysql:5.7  # mysql镜像
-#    # 预设置数据库
-#    environment:
-#      - MYSQL_DATABASE=block_chain
-#      - MYSQL_PASSWORD=root
-#      - MYSQL_ROOT_PASSWORD=root
-#    volumes:
-#    	# 宿主机路径:容器内数据库数据文件路径
-#      - /home/root/docker_db:/var/lib/mysql  # 将宿主机与容器中的文件映射
-#    restart: always  # 若容器运行出现问题，会自动重启容器
-    
-  # 这个地方的web就对应nginx配置文件中的proxy_pass http://web:8000
   web:
     build: 
       context: .
       dockerfile: ./build/django/Dockerfile
     ports:
-    - "8000:8000"
+            - "6666:6666"
+    restart: always
     volumes:
     - /home/BCRUPro
-    command: python3 /home/BCRUPro/manage.py runserver 0.0.0.0:8000
-    
-#    # 在we和db间创建一个网络，使得容器能够通过名字反问另外一个容器
-#    links:
-#    - db
-#    # 定义容器间的依赖关系，比较直观一点就是启动顺序会严格按照depend_on顺序启动
-#    depends_on:
-#    - db
-#    restart: always
-
-#  nginx:
-#    build: ./build/nginx/
-#    # 绑定容器端口到主机端口
-#    ports:
-#    - "80:80"
-#    - "8001:8001"
-#    network_mode: "host"
-#    volumes:
-#    - ./BCRUPro/static:/usr/share/nginx/html/static:ro
-#    #links:
-#    #- web
-#    #depends_on:
-#    #- web
-#    restart: always
+    command: python3 /home/BCRUPro/manage.py runserver 0.0.0.0:6666
+    container_name: "argiculture"
